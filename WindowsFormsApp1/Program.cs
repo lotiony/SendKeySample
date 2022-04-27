@@ -19,4 +19,13 @@ namespace WindowsFormsApp1
             Application.Run(new Form1());
         }
     }
+    
+    public enum HtsControls
+    {
+        EDITBOX = 1,
+        LBL_POS = 2,
+        LBL_CONT = 3,
+        LBL_PRICE = 4,
+        LBL_PGSI = 5,
+    }
 }
