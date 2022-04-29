@@ -40,7 +40,7 @@
             this.panelDrag.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.panelDrag.Location = new System.Drawing.Point(4, 4);
             this.panelDrag.Name = "panelDrag";
-            this.panelDrag.Size = new System.Drawing.Size(92, 142);
+            this.panelDrag.Size = new System.Drawing.Size(42, 142);
             this.panelDrag.TabIndex = 0;
             this.panelDrag.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelDrag_MouseDown);
             // 
@@ -49,12 +49,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(100, 150);
+            this.ClientSize = new System.Drawing.Size(50, 150);
             this.Controls.Add(this.panelDrag);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SelectArea";
             this.Opacity = 0.5D;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "ScreenArea";
             this.ResumeLayout(false);
 

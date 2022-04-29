@@ -51,27 +51,29 @@
             this.btn_청산 = new System.Windows.Forms.Button();
             this.btn_매도 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btn_인식영역선택 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbl_영역크기 = new System.Windows.Forms.Label();
+            this.lbl_매도컬러 = new System.Windows.Forms.Label();
+            this.lbl_매수컬러 = new System.Windows.Forms.Label();
+            this.chk_자동주문 = new System.Windows.Forms.CheckBox();
+            this.lbl_매도신호 = new System.Windows.Forms.Label();
+            this.lbl_매수신호 = new System.Windows.Forms.Label();
+            this.btn_매도설정 = new System.Windows.Forms.Button();
+            this.btn_매수설정 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.dtp_종료시간 = new System.Windows.Forms.DateTimePicker();
+            this.dtp_시작시간 = new System.Windows.Forms.DateTimePicker();
+            this.btn_자동주문 = new System.Windows.Forms.Button();
             this.lbl_영역좌표 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.btn_자동주문 = new System.Windows.Forms.Button();
-            this.dtp_시작시간 = new System.Windows.Forms.DateTimePicker();
-            this.dtp_종료시간 = new System.Windows.Forms.DateTimePicker();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.btn_매수설정 = new System.Windows.Forms.Button();
-            this.btn_매도설정 = new System.Windows.Forms.Button();
-            this.lbl_매수신호 = new System.Windows.Forms.Label();
-            this.lbl_매도신호 = new System.Windows.Forms.Label();
-            this.chk_자동주문 = new System.Windows.Forms.CheckBox();
-            this.lbl_매수컬러 = new System.Windows.Forms.Label();
-            this.lbl_매도컬러 = new System.Windows.Forms.Label();
+            this.lbl_영역크기 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btn_인식영역선택 = new System.Windows.Forms.Button();
+            this.lbl_매수발생 = new System.Windows.Forms.Label();
+            this.lbl_매도발생 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -307,6 +309,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.lbl_매도발생);
+            this.groupBox4.Controls.Add(this.lbl_매수발생);
             this.groupBox4.Controls.Add(this.lbl_매도컬러);
             this.groupBox4.Controls.Add(this.lbl_매수컬러);
             this.groupBox4.Controls.Add(this.chk_자동주문);
@@ -330,37 +334,156 @@
             this.groupBox4.Controls.Add(this.btn_인식영역선택);
             this.groupBox4.Location = new System.Drawing.Point(511, 14);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(308, 380);
+            this.groupBox4.Size = new System.Drawing.Size(308, 439);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "차트인식 자동주문";
             // 
-            // btn_인식영역선택
+            // lbl_매도컬러
             // 
-            this.btn_인식영역선택.Location = new System.Drawing.Point(6, 20);
-            this.btn_인식영역선택.Name = "btn_인식영역선택";
-            this.btn_인식영역선택.Size = new System.Drawing.Size(295, 27);
-            this.btn_인식영역선택.TabIndex = 3;
-            this.btn_인식영역선택.Text = "인식영역 선택";
-            this.btn_인식영역선택.UseVisualStyleBackColor = true;
-            this.btn_인식영역선택.Click += new System.EventHandler(this.btn_인식영역선택_Click);
+            this.lbl_매도컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_매도컬러.Location = new System.Drawing.Point(189, 295);
+            this.lbl_매도컬러.Name = "lbl_매도컬러";
+            this.lbl_매도컬러.Size = new System.Drawing.Size(28, 27);
+            this.lbl_매도컬러.TabIndex = 35;
             // 
-            // label3
+            // lbl_매수컬러
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 60);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "영역크기";
+            this.lbl_매수컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_매수컬러.Location = new System.Drawing.Point(189, 231);
+            this.lbl_매수컬러.Name = "lbl_매수컬러";
+            this.lbl_매수컬러.Size = new System.Drawing.Size(28, 27);
+            this.lbl_매수컬러.TabIndex = 34;
             // 
-            // lbl_영역크기
+            // chk_자동주문
             // 
-            this.lbl_영역크기.BackColor = System.Drawing.Color.White;
-            this.lbl_영역크기.Location = new System.Drawing.Point(6, 76);
-            this.lbl_영역크기.Name = "lbl_영역크기";
-            this.lbl_영역크기.Size = new System.Drawing.Size(140, 21);
-            this.lbl_영역크기.TabIndex = 17;
+            this.chk_자동주문.AutoSize = true;
+            this.chk_자동주문.Location = new System.Drawing.Point(177, 204);
+            this.chk_자동주문.Name = "chk_자동주문";
+            this.chk_자동주문.Size = new System.Drawing.Size(100, 16);
+            this.chk_자동주문.TabIndex = 33;
+            this.chk_자동주문.Text = "자동주문 사용";
+            this.chk_자동주문.UseVisualStyleBackColor = true;
+            this.chk_자동주문.CheckedChanged += new System.EventHandler(this.chk_자동주문_CheckedChanged);
+            // 
+            // lbl_매도신호
+            // 
+            this.lbl_매도신호.BackColor = System.Drawing.Color.White;
+            this.lbl_매도신호.Location = new System.Drawing.Point(88, 325);
+            this.lbl_매도신호.Name = "lbl_매도신호";
+            this.lbl_매도신호.Size = new System.Drawing.Size(206, 25);
+            this.lbl_매도신호.TabIndex = 32;
+            // 
+            // lbl_매수신호
+            // 
+            this.lbl_매수신호.BackColor = System.Drawing.Color.White;
+            this.lbl_매수신호.Location = new System.Drawing.Point(88, 261);
+            this.lbl_매수신호.Name = "lbl_매수신호";
+            this.lbl_매수신호.Size = new System.Drawing.Size(206, 25);
+            this.lbl_매수신호.TabIndex = 31;
+            // 
+            // btn_매도설정
+            // 
+            this.btn_매도설정.Location = new System.Drawing.Point(147, 295);
+            this.btn_매도설정.Name = "btn_매도설정";
+            this.btn_매도설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_매도설정.TabIndex = 30;
+            this.btn_매도설정.Text = "설정";
+            this.btn_매도설정.UseVisualStyleBackColor = true;
+            this.btn_매도설정.Click += new System.EventHandler(this.btn_매도설정_Click);
+            // 
+            // btn_매수설정
+            // 
+            this.btn_매수설정.Location = new System.Drawing.Point(147, 232);
+            this.btn_매수설정.Name = "btn_매수설정";
+            this.btn_매수설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_매수설정.TabIndex = 29;
+            this.btn_매수설정.Text = "설정";
+            this.btn_매수설정.UseVisualStyleBackColor = true;
+            this.btn_매수설정.Click += new System.EventHandler(this.btn_매수설정_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(88, 301);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "매도신호";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(88, 238);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 12);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "매수신호";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(8, 208);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "미리보기";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(10, 223);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(64, 210);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 25;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(161, 111);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 24;
+            this.label8.Text = "종료시간";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 111);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 12);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "시작시간";
+            // 
+            // dtp_종료시간
+            // 
+            this.dtp_종료시간.CustomFormat = "yyyy-MM-dd HH:mm";
+            this.dtp_종료시간.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_종료시간.Location = new System.Drawing.Point(163, 126);
+            this.dtp_종료시간.Name = "dtp_종료시간";
+            this.dtp_종료시간.Size = new System.Drawing.Size(138, 21);
+            this.dtp_종료시간.TabIndex = 22;
+            // 
+            // dtp_시작시간
+            // 
+            this.dtp_시작시간.CustomFormat = "yyyy-MM-dd HH:mm";
+            this.dtp_시작시간.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_시작시간.Location = new System.Drawing.Point(8, 126);
+            this.dtp_시작시간.Name = "dtp_시작시간";
+            this.dtp_시작시간.Size = new System.Drawing.Size(138, 21);
+            this.dtp_시작시간.TabIndex = 21;
+            // 
+            // btn_자동주문
+            // 
+            this.btn_자동주문.Location = new System.Drawing.Point(33, 159);
+            this.btn_자동주문.Name = "btn_자동주문";
+            this.btn_자동주문.Size = new System.Drawing.Size(244, 43);
+            this.btn_자동주문.TabIndex = 20;
+            this.btn_자동주문.Text = "작동시작";
+            this.btn_자동주문.UseVisualStyleBackColor = true;
+            this.btn_자동주문.Click += new System.EventHandler(this.btn_자동주문_Click);
             // 
             // lbl_영역좌표
             // 
@@ -379,158 +502,69 @@
             this.label6.TabIndex = 18;
             this.label6.Text = "영역좌표";
             // 
-            // btn_자동주문
+            // lbl_영역크기
             // 
-            this.btn_자동주문.Location = new System.Drawing.Point(33, 159);
-            this.btn_자동주문.Name = "btn_자동주문";
-            this.btn_자동주문.Size = new System.Drawing.Size(244, 43);
-            this.btn_자동주문.TabIndex = 20;
-            this.btn_자동주문.Text = "작동시작";
-            this.btn_자동주문.UseVisualStyleBackColor = true;
-            this.btn_자동주문.Click += new System.EventHandler(this.btn_자동주문_Click);
+            this.lbl_영역크기.BackColor = System.Drawing.Color.White;
+            this.lbl_영역크기.Location = new System.Drawing.Point(6, 76);
+            this.lbl_영역크기.Name = "lbl_영역크기";
+            this.lbl_영역크기.Size = new System.Drawing.Size(140, 21);
+            this.lbl_영역크기.TabIndex = 17;
             // 
-            // dtp_시작시간
+            // label3
             // 
-            this.dtp_시작시간.CustomFormat = "yyyy-MM-dd HH:mm";
-            this.dtp_시작시간.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_시작시간.Location = new System.Drawing.Point(8, 126);
-            this.dtp_시작시간.Name = "dtp_시작시간";
-            this.dtp_시작시간.Size = new System.Drawing.Size(138, 21);
-            this.dtp_시작시간.TabIndex = 21;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 60);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "영역크기";
             // 
-            // dtp_종료시간
+            // btn_인식영역선택
             // 
-            this.dtp_종료시간.CustomFormat = "yyyy-MM-dd HH:mm";
-            this.dtp_종료시간.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_종료시간.Location = new System.Drawing.Point(163, 126);
-            this.dtp_종료시간.Name = "dtp_종료시간";
-            this.dtp_종료시간.Size = new System.Drawing.Size(138, 21);
-            this.dtp_종료시간.TabIndex = 22;
+            this.btn_인식영역선택.Location = new System.Drawing.Point(6, 20);
+            this.btn_인식영역선택.Name = "btn_인식영역선택";
+            this.btn_인식영역선택.Size = new System.Drawing.Size(295, 27);
+            this.btn_인식영역선택.TabIndex = 3;
+            this.btn_인식영역선택.Text = "인식영역 선택";
+            this.btn_인식영역선택.UseVisualStyleBackColor = true;
+            this.btn_인식영역선택.Click += new System.EventHandler(this.btn_인식영역선택_Click);
             // 
-            // label7
+            // lbl_매수발생
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 111);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 12);
-            this.label7.TabIndex = 23;
-            this.label7.Text = "시작시간";
+            this.lbl_매수발생.BackColor = System.Drawing.Color.Coral;
+            this.lbl_매수발생.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_매수발생.Location = new System.Drawing.Point(198, 360);
+            this.lbl_매수발생.Name = "lbl_매수발생";
+            this.lbl_매수발생.Size = new System.Drawing.Size(96, 64);
+            this.lbl_매수발생.TabIndex = 36;
+            this.lbl_매수발생.Text = "매수신호발생";
+            this.lbl_매수발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_매수발생.Visible = false;
             // 
-            // label8
+            // lbl_매도발생
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(161, 111);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 24;
-            this.label8.Text = "종료시간";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(10, 230);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(69, 149);
-            this.pictureBox1.TabIndex = 25;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 215);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 12);
-            this.label9.TabIndex = 26;
-            this.label9.Text = "미리보기";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(93, 272);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(53, 12);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "매수신호";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(93, 329);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(53, 12);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "매도신호";
-            // 
-            // btn_매수설정
-            // 
-            this.btn_매수설정.Location = new System.Drawing.Point(152, 266);
-            this.btn_매수설정.Name = "btn_매수설정";
-            this.btn_매수설정.Size = new System.Drawing.Size(37, 25);
-            this.btn_매수설정.TabIndex = 29;
-            this.btn_매수설정.Text = "설정";
-            this.btn_매수설정.UseVisualStyleBackColor = true;
-            this.btn_매수설정.Click += new System.EventHandler(this.btn_매수설정_Click);
-            // 
-            // btn_매도설정
-            // 
-            this.btn_매도설정.Location = new System.Drawing.Point(152, 323);
-            this.btn_매도설정.Name = "btn_매도설정";
-            this.btn_매도설정.Size = new System.Drawing.Size(37, 25);
-            this.btn_매도설정.TabIndex = 30;
-            this.btn_매도설정.Text = "설정";
-            this.btn_매도설정.UseVisualStyleBackColor = true;
-            this.btn_매도설정.Click += new System.EventHandler(this.btn_매도설정_Click);
-            // 
-            // lbl_매수신호
-            // 
-            this.lbl_매수신호.BackColor = System.Drawing.Color.White;
-            this.lbl_매수신호.Location = new System.Drawing.Point(93, 295);
-            this.lbl_매수신호.Name = "lbl_매수신호";
-            this.lbl_매수신호.Size = new System.Drawing.Size(206, 25);
-            this.lbl_매수신호.TabIndex = 31;
-            // 
-            // lbl_매도신호
-            // 
-            this.lbl_매도신호.BackColor = System.Drawing.Color.White;
-            this.lbl_매도신호.Location = new System.Drawing.Point(93, 347);
-            this.lbl_매도신호.Name = "lbl_매도신호";
-            this.lbl_매도신호.Size = new System.Drawing.Size(206, 25);
-            this.lbl_매도신호.TabIndex = 32;
-            // 
-            // chk_자동주문
-            // 
-            this.chk_자동주문.AutoSize = true;
-            this.chk_자동주문.Location = new System.Drawing.Point(177, 204);
-            this.chk_자동주문.Name = "chk_자동주문";
-            this.chk_자동주문.Size = new System.Drawing.Size(100, 16);
-            this.chk_자동주문.TabIndex = 33;
-            this.chk_자동주문.Text = "자동주문 사용";
-            this.chk_자동주문.UseVisualStyleBackColor = true;
-            this.chk_자동주문.CheckedChanged += new System.EventHandler(this.chk_자동주문_CheckedChanged);
-            // 
-            // lbl_매수컬러
-            // 
-            this.lbl_매수컬러.BackColor = System.Drawing.Color.White;
-            this.lbl_매수컬러.Location = new System.Drawing.Point(194, 265);
-            this.lbl_매수컬러.Name = "lbl_매수컬러";
-            this.lbl_매수컬러.Size = new System.Drawing.Size(28, 27);
-            this.lbl_매수컬러.TabIndex = 34;
-            // 
-            // lbl_매도컬러
-            // 
-            this.lbl_매도컬러.BackColor = System.Drawing.Color.White;
-            this.lbl_매도컬러.Location = new System.Drawing.Point(194, 323);
-            this.lbl_매도컬러.Name = "lbl_매도컬러";
-            this.lbl_매도컬러.Size = new System.Drawing.Size(28, 27);
-            this.lbl_매도컬러.TabIndex = 35;
+            this.lbl_매도발생.BackColor = System.Drawing.Color.SteelBlue;
+            this.lbl_매도발생.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_매도발생.Location = new System.Drawing.Point(88, 360);
+            this.lbl_매도발생.Name = "lbl_매도발생";
+            this.lbl_매도발생.Size = new System.Drawing.Size(96, 64);
+            this.lbl_매도발생.TabIndex = 37;
+            this.lbl_매도발생.Text = "매도신호발생";
+            this.lbl_매도발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_매도발생.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 407);
+            this.ClientSize = new System.Drawing.Size(830, 465);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(850, 450);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -593,6 +627,8 @@
         private System.Windows.Forms.Button btn_인식영역선택;
         private System.Windows.Forms.Label lbl_매수컬러;
         private System.Windows.Forms.Label lbl_매도컬러;
+        private System.Windows.Forms.Label lbl_매도발생;
+        private System.Windows.Forms.Label lbl_매수발생;
     }
 }
 

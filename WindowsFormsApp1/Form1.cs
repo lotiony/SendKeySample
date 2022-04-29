@@ -22,6 +22,29 @@ namespace WindowsFormsApp1
             timer = new Timer();
             timer.Interval = 200;
             timer.Tick += Timer_Tick;
+
+            buyTimer = new Timer();
+            buyTimer.Interval = 3000;
+            buyTimer.Tick += BuyTimer_Tick;
+
+            sellTimer = new Timer();
+            sellTimer.Interval = 3000;
+            sellTimer.Tick += SellTimer_Tick;
+
+
+            LoadInfo();
+        }
+
+        private void SellTimer_Tick(object sender, EventArgs e)
+        {
+            lbl_매도발생.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
+            sellTimer.Stop();
+        }
+
+        private void BuyTimer_Tick(object sender, EventArgs e)
+        {
+            lbl_매수발생.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
+            buyTimer.Stop();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -35,6 +58,8 @@ namespace WindowsFormsApp1
         ObservableCollection<ApplicationInfo> applicationInfos;
         ApplicationInfo selectedItem;
         Timer timer;
+        Timer buyTimer;
+        Timer sellTimer;
 
         IntPtr selectedHandle { get { return selectedItem?.Handle ?? IntPtr.Zero; } }
         IntPtr orderCountHandle { get; set; }
@@ -181,10 +206,12 @@ namespace WindowsFormsApp1
             if (btn_인식영역선택.Text == "인식영역 선택")
             {
                 btn_인식영역선택.Text = "선택 완료";
-
+                cr?.Stop();
                 areaForm = new SelectArea();
                 areaForm.TopMost = true;
                 areaForm.Show();
+                areaForm.Location = rect.Location;
+                areaForm.ClientSize = rect.Size;
             }
             else
             {
@@ -193,12 +220,59 @@ namespace WindowsFormsApp1
 
                 lbl_영역좌표.Text = $"({rect.X},{rect.Y}) ~ ({rect.Right},{rect.Bottom})";
                 lbl_영역크기.Text = $"X = {rect.Width} Y = {rect.Height}";
-                areaForm.Hide();
 
+                SaveInfo();
+                areaForm.Hide();
                 PreviewPicture();
+                cr?.Update(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
+                cr?.Start();
             }
             
             
+        }
+
+        private void SaveInfo()
+        {
+            Properties.Settings.Default.LocX = rect.X;
+            Properties.Settings.Default.LocY = rect.Y;
+            Properties.Settings.Default.AreaW = rect.Width;
+            Properties.Settings.Default.AreaH = rect.Height;
+            Properties.Settings.Default.ColorB = lbl_매수컬러.BackColor;
+            Properties.Settings.Default.ColorS = lbl_매도컬러.BackColor;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void LoadInfo()
+        {
+            if (Properties.Settings.Default.LocX != 0 && Properties.Settings.Default.AreaW > 0)
+            {
+                rect = new Rectangle(
+                        Properties.Settings.Default.LocX,
+                        Properties.Settings.Default.LocY,
+                        Properties.Settings.Default.AreaW,
+                        Properties.Settings.Default.AreaH
+                    );
+
+                lbl_영역좌표.Text = $"({rect.X},{rect.Y}) ~ ({rect.Right},{rect.Bottom})";
+                lbl_영역크기.Text = $"X = {rect.Width} Y = {rect.Height}";
+                PreviewPicture();
+            }
+
+            if (Properties.Settings.Default.ColorB != Color.FromArgb(0,0,0,0))
+            {
+                Color c = Properties.Settings.Default.ColorB;
+                lbl_매수컬러.BackColor = c;
+                lbl_매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+
+            if (Properties.Settings.Default.ColorS != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorS;
+                lbl_매도컬러.BackColor = c;
+                lbl_매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+
         }
 
         private void PreviewPicture()
@@ -209,9 +283,54 @@ namespace WindowsFormsApp1
             pictureBox1.Image = bmp;
         }
 
+        ChartRecognition cr;
         private void btn_자동주문_Click(object sender, EventArgs e)
         {
+            if (btn_자동주문.Text == "작동시작")
+            {
+                btn_자동주문.Text = "작동중지";
 
+                cr = new ChartRecognition(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
+                cr.UpdateEvent += Cr_UpdateEvent;
+                cr.Buy += Cr_Buy;
+                cr.Sell += Cr_Sell;
+                cr.Clear += Cr_Clear;
+                cr.Start();
+
+            }
+            else
+            {
+                btn_자동주문.Text = "작동시작";
+
+                cr.Stop();
+                PreviewPicture();
+                cr = null;
+                
+            }
+
+        }
+
+        private void Cr_Clear()
+        {
+            lbl_매도발생.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
+            lbl_매수발생.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
+        }
+
+        private void Cr_Sell()
+        {
+            lbl_매도발생.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = true; }));
+            //sellTimer.Start();
+        }
+
+        private void Cr_Buy()
+        {
+            lbl_매수발생.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = true; }));
+            //buyTimer.Start();
+        }
+
+        private void Cr_UpdateEvent()
+        {
+            pictureBox1.Image = cr.CaptureBitmap;            
         }
 
         private void chk_자동주문_CheckedChanged(object sender, EventArgs e)
@@ -266,6 +385,7 @@ namespace WindowsFormsApp1
                 case Keys.Escape:
                     this.Cursor = Cursors.Default;
                     colorTm.Stop();
+                    SaveInfo();
                     break;
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
