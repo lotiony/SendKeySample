@@ -41,7 +41,7 @@ namespace WindowsFormsApp1
             SellColor = sellColor;
 
             timer = new Timer();
-            timer.Interval = 100;
+            timer.Interval = 5;
             timer.Elapsed += Timer_Elapsed;
 
             bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);

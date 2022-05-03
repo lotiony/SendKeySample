@@ -21,7 +21,7 @@ namespace WindowsFormsApp1
             public bool Alived { get; set; }
         }
 
-        public static ObservableCollection<ApplicationInfo> GetHts()
+        public static ObservableCollection<ApplicationInfo> GetHts(string filter)
         {
             ObservableCollection<ApplicationInfo> openedApplications = new ObservableCollection<ApplicationInfo>();
             Dictionary<IntPtr, string> windows = new Dictionary<IntPtr, string>();
@@ -41,7 +41,7 @@ namespace WindowsFormsApp1
                     NativeWin32.GetWindowText(nChildHandle, sbTitle, sbTitle.Capacity);
                     String sWinTitle = sbTitle.ToString();
                     {
-                        if (sWinTitle.Length > 0)
+                        if (sWinTitle.Length > 0 && sWinTitle.Contains(filter))
                         {
                             openedApplications.Add(new ApplicationInfo()
                             {
@@ -72,6 +72,9 @@ namespace WindowsFormsApp1
 
             switch (keys)
             {
+                case VKeys.KEY_F6:
+                    keystring = "{F6}";
+                    break;
                 case VKeys.KEY_F9:
                     keystring = "{F9}";
                     break;
