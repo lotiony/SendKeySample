@@ -94,5 +94,17 @@ namespace WindowsFormsApp1.Properties {
                 this["ColorS"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int BodySize {
+            get {
+                return ((int)(this["BodySize"]));
+            }
+            set {
+                this["BodySize"] = value;
+            }
+        }
     }
 }

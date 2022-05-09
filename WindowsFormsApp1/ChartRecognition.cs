@@ -15,6 +15,13 @@ namespace WindowsFormsApp1
         public Color BuyColor { get; set; }
         public Color SellColor { get; set; }
         public Bitmap CaptureBitmap { get { return bmp; } }
+        public bool IsSignaled { get { return (_isBuySignaled || _isSellSignaled); } }
+        public byte FromCr { get; set; }
+        public int MinRecogSize { get; set; }
+        public bool IsCenter { get; set; }
+
+        private bool _isBuySignaled = false;
+        private bool _isSellSignaled = false;
 
 
         private Timer timer;
@@ -27,26 +34,31 @@ namespace WindowsFormsApp1
         public delegate void deleUpdate();
         public event deleUpdate UpdateEvent;
 
-        public delegate void deleBuy();
-        public delegate void deleSell();
+        public delegate void deleBuy(byte fromCr);
+        public delegate void deleSell(byte fromCr);
         public delegate void deleClear();
         public event deleBuy Buy;
         public event deleSell Sell;
         public event deleClear Clear;
 
-        public ChartRecognition(Rectangle chartArea, Color buyColor, Color sellColor)
+        public ChartRecognition(Rectangle chartArea, Color buyColor, Color sellColor, double interval, byte fromCr, int minRecogSize = 5)
         {
             ChartArea = chartArea;
             BuyColor = buyColor;
             SellColor = sellColor;
+            this.FromCr = fromCr;
+            this.MinRecogSize = minRecogSize;
+            this.IsCenter = true;
 
             timer = new Timer();
-            timer.Interval = 5;
+            timer.Interval = interval;
             timer.Elapsed += Timer_Elapsed;
 
             bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);
             g = Graphics.FromImage(bmp);
         }
+
+
         public void Update(Rectangle chartArea, Color buyColor, Color sellColor)
         {
             ChartArea = chartArea;
@@ -55,25 +67,40 @@ namespace WindowsFormsApp1
 
             bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);
             g = Graphics.FromImage(bmp);
-
         }
 
-        public void Start() => timer.Start();
+        public void Start()
+        {
+            bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);
+            g = Graphics.FromImage(bmp);
+            timer.Start();
+        }
 
-        public void Stop() => timer.Stop();
-
+        public void Stop()
+        {
+            timer.Stop();
+            bmp = new Bitmap(1, 1, PixelFormat.Format24bppRgb);
+            g = Graphics.FromImage(bmp);
+        }
 
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            ImageUpdate();
-            ImageRecognize();
+            try
+            {
+                ImageUpdate();
+                ImageRecognize();
+            }
+            catch (Exception)
+            {
+            }
         }
+
 
         private void ImageRecognize()
         {
             this.Clear();
-            int center = (int)(bmp.Width / 2);
+            int center = IsCenter ? (int)(bmp.Width / 2) : (int)(bmp.Width / 3 * 2);
             this._buyCount = 0;
             this._sellCount = 0;
 
@@ -109,17 +136,26 @@ namespace WindowsFormsApp1
             }
 
 
-            if (_buyCount > 10) this.Buy();
-            if (_sellCount > 10) this.Sell();
-            
+            if (_buyCount > MinRecogSize) { this._isBuySignaled = true; this.Buy(this.FromCr); } else { this._isBuySignaled = false; }
+            if (_sellCount > MinRecogSize) { this._isSellSignaled = true; this.Sell(this.FromCr); } else { this._isSellSignaled = false; }
+
 
         }
+
+
 
         private void ImageUpdate()
         {
-            g.CopyFromScreen(ChartArea.Left, ChartArea.Top, 0, 0, ChartArea.Size, CopyPixelOperation.SourceCopy);
-            
-            this.UpdateEvent();
+            try
+            {
+                g.CopyFromScreen(ChartArea.Left, ChartArea.Top, 0, 0, ChartArea.Size, CopyPixelOperation.SourceCopy);
+
+                this.UpdateEvent();
+            }
+            catch (Exception)
+            {
+            }
         }
+
     }
 }

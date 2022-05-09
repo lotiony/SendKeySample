@@ -20,5 +20,8 @@
     <Setting Name="ColorS" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">0, 0, 0, 0</Value>
     </Setting>
+    <Setting Name="BodySize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

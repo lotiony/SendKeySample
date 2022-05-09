@@ -17,6 +17,7 @@ namespace WindowsFormsApp1
     {
         protected Status _status;
         protected ChartRecognition cr;
+        protected ChartRecognition crSub;
 
         ObservableCollection<ApplicationInfo> applicationInfos;
         ApplicationInfo selectedItem;
@@ -102,9 +103,9 @@ namespace WindowsFormsApp1
 
                 if (_status.OldPosType != _status.PosType)
                 {
+                    _status.OldPosType = _status.PosType;
                     진입중 = false;
                     lbl_진입중.Visible = false;
-                    _status.OldPosType = _status.PosType;
                 }
             }
 
@@ -265,6 +266,7 @@ namespace WindowsFormsApp1
                 Ctrl_자동주문(false);
                 btn_인식영역선택.Text = "선택 완료";
                 cr?.Stop();
+                crSub?.Stop();
                 areaForm = new SelectArea();
                 areaForm.TopMost = true;
                 areaForm.Show();
@@ -287,9 +289,14 @@ namespace WindowsFormsApp1
                 PreviewPicture();
                 cr?.Update(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
                 cr?.Start();
+
+                Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
+                crSub?.Update(sArea, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
+                crSub?.Start();
+
             }
-            
-            
+
+
         }
 
         private void SaveInfo()
@@ -300,6 +307,7 @@ namespace WindowsFormsApp1
             Properties.Settings.Default.AreaH = rect.Height;
             Properties.Settings.Default.ColorB = lbl_매수컬러.BackColor;
             Properties.Settings.Default.ColorS = lbl_매도컬러.BackColor;
+            Properties.Settings.Default.BodySize = (int)nud_몸통크기.Value;
 
             Properties.Settings.Default.Save();
         }
@@ -333,9 +341,16 @@ namespace WindowsFormsApp1
                 lbl_매도컬러.BackColor = c;
                 lbl_매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
             }
+
+            if (Properties.Settings.Default.BodySize != 0)
+            {
+                nud_몸통크기.Value = Properties.Settings.Default.BodySize;
+            }
+
             기준계약수 = (int)numericUpDown1.Value;
             진입중 = false;
             lbl_진입중.Visible = false;
+            lbl_크기확인.Height = (int)nud_몸통크기.Value;
         }
 
         private void PreviewPicture()
@@ -344,6 +359,12 @@ namespace WindowsFormsApp1
             Graphics g = Graphics.FromImage(bmp);
             g.CopyFromScreen(rect.Left, rect.Top, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
             pictureBox1.Image = bmp;
+            
+
+            var sbmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
+            Graphics sg = Graphics.FromImage(sbmp);
+            sg.CopyFromScreen(rect.X - rect.Width, rect.Top, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
+            pictureBox2.Image = sbmp;
         }
 
 
@@ -358,12 +379,25 @@ namespace WindowsFormsApp1
                 }
                 
                 Ctrl_자동주문(true);
-                cr = new ChartRecognition(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
+                
+                // 기본 인식 스레드
+                cr = new ChartRecognition(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor, 10, 1, 5);
                 cr.UpdateEvent += Cr_UpdateEvent;
                 cr.Buy += Cr_Buy;
                 cr.Sell += Cr_Sell;
                 cr.Clear += Cr_Clear;
                 cr.Start();
+
+                /// 보조 확인 영역은 본 지정 영역의 바로 좌측에 동일 사이즈
+                Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
+                crSub = new ChartRecognition(sArea, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor, 50, 2, 5);
+                crSub.UpdateEvent += CrSub_UpdateEvent;
+                crSub.Buy += Cr_Buy;
+                crSub.Sell += Cr_Sell;
+                crSub.Clear += CrSub_Clear;
+                crSub.Start();
+
+
                 진입중 = false;
                 lbl_진입중.Visible = false;
             }
@@ -371,14 +405,17 @@ namespace WindowsFormsApp1
             {
                 Ctrl_자동주문(false);
                 cr.Stop();
+                crSub.Stop();
                 PreviewPicture();
+                CrSub_UpdateEvent();
                 cr = null;
+                crSub = null;
                 청산_Click(null, null);
             }
 
         }
 
-        
+ 
         private void Ctrl_자동주문(bool v)
         {
             if (v)
@@ -391,6 +428,8 @@ namespace WindowsFormsApp1
                 chk_자동매도.Checked = true;
                 chk_자동매수.Checked = true;
                 chk_자동스위칭.Checked = true;
+                chk_몸통크기.Enabled = true;
+                nud_몸통크기.Enabled = true;
             }
             else
             {
@@ -402,6 +441,8 @@ namespace WindowsFormsApp1
                 chk_자동매도.Checked = false;
                 chk_자동매수.Checked = false;
                 chk_자동스위칭.Checked = false;
+                chk_몸통크기.Enabled = false;
+                nud_몸통크기.Enabled = false;
             }
         }
 
@@ -410,59 +451,87 @@ namespace WindowsFormsApp1
             this.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
             this.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
         }
-
-        private void Cr_Sell()
+        private void CrSub_Clear()
         {
-            this.Invoke(new MethodInvoker(delegate () { 
-                lbl_매도발생.Visible = true;
-                if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
+            this.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
+            this.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
+        }
+
+        private void Cr_Sell(byte fromCr)
+        {
+            this.Invoke(new MethodInvoker(delegate () {
+                /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
+                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
                 {
-                    if (자동매도)   // chk_자동매도 = true 인 경우에만 진행
+                    lbl_매도발생.Visible = true;
+                    if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        매도체크 = true;
-                        // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                        switch (_status.PosType)
+                        if (자동매도)   // chk_자동매도 = true 인 경우에만 진행
                         {
-                            case CType.매수:
-                                if (자동스위칭) 매도스위칭();
-                                else 일괄청산();
-                                break;
-                            case CType.매도:
-                                // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
-                                break;
-                            case CType.없음:
-                                매도진입();
-                                break;
+                            매도체크 = true;
+                            // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                            switch (_status.PosType)
+                            {
+                                case CType.매수:
+                                    if (자동스위칭) 매도스위칭();
+                                    else 일괄청산();
+                                    break;
+                                case CType.매도:
+                                    // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
+                                    break;
+                                case CType.없음:
+                                    매도진입();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            // chk_자동매도 = false인 경우 신규진입은 하지 않지만, 만약 진입중인 매수포지션이 있다면 청산한다.
+                            if (_status.PosType == CType.매수 && _status.Contracts > 0) 일괄청산();
                         }
                     }
+
                 }
+                
             }));
         }
-        private void Cr_Buy()
+        private void Cr_Buy(byte fromCr)
         {
             this.Invoke(new MethodInvoker(delegate () { 
-                lbl_매수발생.Visible = true;
-                if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
+
+                /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
+                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
                 {
-                    if (자동매수)   // chk_자동매수 = true 인 경우에만 진행
+                    lbl_매수발생.Visible = true;
+                    if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        매수체크 = true;
-                        // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                        switch (_status.PosType)
+                        if (자동매수)   // chk_자동매수 = true 인 경우에만 진행
                         {
-                            case CType.매수:
-                                // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
-                                break;
-                            case CType.매도:
-                                if (자동스위칭) 매수스위칭();
-                                else 일괄청산();
-                                break;
-                            case CType.없음:
-                                매수진입();
-                                break;
+                            매수체크 = true;
+                            // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                            switch (_status.PosType)
+                            {
+                                case CType.매수:
+                                    // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
+                                    break;
+                                case CType.매도:
+                                    if (자동스위칭) 매수스위칭();
+                                    else 일괄청산();
+                                    break;
+                                case CType.없음:
+                                    매수진입();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            // chk_자동매수 = false인 경우 신규진입은 하지 않지만, 만약 진입중인 매도포지션이 있다면 청산한다.
+                            if (_status.PosType == CType.매도 && _status.Contracts > 0) 일괄청산();
                         }
                     }
                 }
+
+
             }));
         }
         private void 매도진입()
@@ -533,6 +602,13 @@ namespace WindowsFormsApp1
         {
             this.Invoke(new MethodInvoker(delegate () { pictureBox1.Image = cr?.CaptureBitmap ?? null; }));
         }
+
+        private void CrSub_UpdateEvent()
+        {
+            this.Invoke(new MethodInvoker(delegate () { pictureBox2.Image = crSub?.CaptureBitmap ?? null; }));
+        }
+
+
 
         private void chk_자동주문_CheckedChanged(object sender, EventArgs e)
         {
@@ -619,6 +695,36 @@ namespace WindowsFormsApp1
                 lbl_진입중.Visible = false;
             }
 
+        }
+
+        private void chk_몸통크기_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chk_몸통크기.Checked)
+            {
+                /// 메인 감시 영역의 몸통크기만 보는 모드일 땐 보조감지영역을 꺼준다.
+                /// 그리고 메인감지영역의 정중앙이 아닌 오른쪽 2/3 지점을 읽어준다 (위아래 꼬리가 인식되지 않도록)
+                crSub?.Stop();
+                CrSub_Clear();
+                CrSub_UpdateEvent();
+
+                cr.MinRecogSize = (int)nud_몸통크기.Value;
+                cr.IsCenter = false;
+            }
+            else
+            {
+                cr.MinRecogSize = (int)nud_몸통크기.Value;
+                cr.IsCenter = true;
+                crSub?.Start();
+            }
+        }
+
+        private void nud_몸통크기_ValueChanged(object sender, EventArgs e)
+        {
+            lbl_크기확인.Height = (int)nud_몸통크기.Value;
+            SaveInfo();
+
+            if (cr != null) cr.MinRecogSize = (int)nud_몸통크기.Value;
+            if (crSub != null) crSub.MinRecogSize = (int)nud_몸통크기.Value;
         }
 
         private void ColorTm_Tick(object sender, EventArgs e)
