@@ -52,6 +52,9 @@
             this.btn_청산 = new System.Windows.Forms.Button();
             this.btn_매도 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lbl_크기확인 = new System.Windows.Forms.Label();
+            this.chk_몸통크기 = new System.Windows.Forms.CheckBox();
+            this.nud_몸통크기 = new System.Windows.Forms.NumericUpDown();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.btn_일괄취소 = new System.Windows.Forms.Button();
             this.lbl_진입중 = new System.Windows.Forms.Label();
@@ -81,17 +84,27 @@
             this.lbl_영역크기 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btn_인식영역선택 = new System.Windows.Forms.Button();
-            this.nud_몸통크기 = new System.Windows.Forms.NumericUpDown();
-            this.chk_몸통크기 = new System.Windows.Forms.CheckBox();
-            this.lbl_크기확인 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lbl_1픽셀은 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lbl_1포인트는 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.nud_포인트값 = new System.Windows.Forms.NumericUpDown();
+            this.lbl_봉크기 = new System.Windows.Forms.Label();
+            this.lbl_몸통크기 = new System.Windows.Forms.Label();
+            this.btn_몸통확인 = new System.Windows.Forms.Button();
+            this.btn_테스트작동 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_몸통크기)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_몸통크기)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_포인트값)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -333,6 +346,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.btn_테스트작동);
             this.groupBox4.Controls.Add(this.lbl_크기확인);
             this.groupBox4.Controls.Add(this.chk_몸통크기);
             this.groupBox4.Controls.Add(this.nud_몸통크기);
@@ -371,6 +385,45 @@
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "차트인식 자동주문";
+            // 
+            // lbl_크기확인
+            // 
+            this.lbl_크기확인.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lbl_크기확인.Location = new System.Drawing.Point(290, 358);
+            this.lbl_크기확인.Name = "lbl_크기확인";
+            this.lbl_크기확인.Size = new System.Drawing.Size(25, 10);
+            this.lbl_크기확인.TabIndex = 47;
+            // 
+            // chk_몸통크기
+            // 
+            this.chk_몸통크기.AutoSize = true;
+            this.chk_몸통크기.Enabled = false;
+            this.chk_몸통크기.Location = new System.Drawing.Point(126, 357);
+            this.chk_몸통크기.Name = "chk_몸통크기";
+            this.chk_몸통크기.Size = new System.Drawing.Size(96, 16);
+            this.chk_몸통크기.TabIndex = 46;
+            this.chk_몸통크기.Text = "차트몸통인식";
+            this.chk_몸통크기.UseVisualStyleBackColor = true;
+            this.chk_몸통크기.CheckedChanged += new System.EventHandler(this.chk_몸통크기_CheckedChanged);
+            // 
+            // nud_몸통크기
+            // 
+            this.nud_몸통크기.Enabled = false;
+            this.nud_몸통크기.Location = new System.Drawing.Point(225, 356);
+            this.nud_몸통크기.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.nud_몸통크기.Name = "nud_몸통크기";
+            this.nud_몸통크기.Size = new System.Drawing.Size(58, 21);
+            this.nud_몸통크기.TabIndex = 45;
+            this.nud_몸통크기.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_몸통크기.ValueChanged += new System.EventHandler(this.nud_몸통크기_ValueChanged);
             // 
             // pictureBox2
             // 
@@ -606,7 +659,7 @@
             this.btn_자동주문.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_자동주문.Location = new System.Drawing.Point(33, 177);
             this.btn_자동주문.Name = "btn_자동주문";
-            this.btn_자동주문.Size = new System.Drawing.Size(269, 43);
+            this.btn_자동주문.Size = new System.Drawing.Size(212, 43);
             this.btn_자동주문.TabIndex = 20;
             this.btn_자동주문.Text = "작동시작";
             this.btn_자동주문.UseVisualStyleBackColor = true;
@@ -658,50 +711,132 @@
             this.btn_인식영역선택.UseVisualStyleBackColor = true;
             this.btn_인식영역선택.Click += new System.EventHandler(this.btn_인식영역선택_Click);
             // 
-            // nud_몸통크기
+            // groupBox5
             // 
-            this.nud_몸통크기.Enabled = false;
-            this.nud_몸통크기.Location = new System.Drawing.Point(225, 356);
-            this.nud_몸통크기.Minimum = new decimal(new int[] {
-            3,
+            this.groupBox5.Controls.Add(this.lbl_1픽셀은);
+            this.groupBox5.Controls.Add(this.label15);
+            this.groupBox5.Controls.Add(this.lbl_1포인트는);
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.label9);
+            this.groupBox5.Controls.Add(this.nud_포인트값);
+            this.groupBox5.Controls.Add(this.lbl_봉크기);
+            this.groupBox5.Controls.Add(this.lbl_몸통크기);
+            this.groupBox5.Controls.Add(this.btn_몸통확인);
+            this.groupBox5.Location = new System.Drawing.Point(147, 402);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(352, 87);
+            this.groupBox5.TabIndex = 3;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "봉크기로 포인트 계산";
+            // 
+            // lbl_1픽셀은
+            // 
+            this.lbl_1픽셀은.Location = new System.Drawing.Point(270, 73);
+            this.lbl_1픽셀은.Name = "lbl_1픽셀은";
+            this.lbl_1픽셀은.Size = new System.Drawing.Size(72, 10);
+            this.lbl_1픽셀은.TabIndex = 55;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(253, 55);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(45, 12);
+            this.label15.TabIndex = 54;
+            this.label15.Text = "1픽셀 =";
+            // 
+            // lbl_1포인트는
+            // 
+            this.lbl_1포인트는.Location = new System.Drawing.Point(269, 38);
+            this.lbl_1포인트는.Name = "lbl_1포인트는";
+            this.lbl_1포인트는.Size = new System.Drawing.Size(72, 10);
+            this.lbl_1포인트는.TabIndex = 53;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(252, 20);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(57, 12);
+            this.label12.TabIndex = 52;
+            this.label12.Text = "1포인트 =";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(156, 35);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(81, 12);
+            this.label9.TabIndex = 51;
+            this.label9.Text = "포인트값 입력";
+            // 
+            // nud_포인트값
+            // 
+            this.nud_포인트값.DecimalPlaces = 2;
+            this.nud_포인트값.Increment = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+            this.nud_포인트값.Location = new System.Drawing.Point(158, 53);
+            this.nud_포인트값.Maximum = new decimal(new int[] {
+            300,
             0,
             0,
             0});
-            this.nud_몸통크기.Name = "nud_몸통크기";
-            this.nud_몸통크기.Size = new System.Drawing.Size(58, 21);
-            this.nud_몸통크기.TabIndex = 45;
-            this.nud_몸통크기.Value = new decimal(new int[] {
-            10,
+            this.nud_포인트값.Name = "nud_포인트값";
+            this.nud_포인트값.Size = new System.Drawing.Size(73, 21);
+            this.nud_포인트값.TabIndex = 50;
+            this.nud_포인트값.Value = new decimal(new int[] {
+            100,
             0,
             0,
             0});
-            this.nud_몸통크기.ValueChanged += new System.EventHandler(this.nud_몸통크기_ValueChanged);
+            this.nud_포인트값.ValueChanged += new System.EventHandler(this.nud_포인트값_ValueChanged);
             // 
-            // chk_몸통크기
+            // lbl_봉크기
             // 
-            this.chk_몸통크기.AutoSize = true;
-            this.chk_몸통크기.Enabled = false;
-            this.chk_몸통크기.Location = new System.Drawing.Point(126, 357);
-            this.chk_몸통크기.Name = "chk_몸통크기";
-            this.chk_몸통크기.Size = new System.Drawing.Size(96, 16);
-            this.chk_몸통크기.TabIndex = 46;
-            this.chk_몸통크기.Text = "차트몸통인식";
-            this.chk_몸통크기.UseVisualStyleBackColor = true;
-            this.chk_몸통크기.CheckedChanged += new System.EventHandler(this.chk_몸통크기_CheckedChanged);
+            this.lbl_봉크기.AutoSize = true;
+            this.lbl_봉크기.Location = new System.Drawing.Point(12, 62);
+            this.lbl_봉크기.Name = "lbl_봉크기";
+            this.lbl_봉크기.Size = new System.Drawing.Size(0, 12);
+            this.lbl_봉크기.TabIndex = 49;
             // 
-            // lbl_크기확인
+            // lbl_몸통크기
             // 
-            this.lbl_크기확인.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_크기확인.Location = new System.Drawing.Point(290, 358);
-            this.lbl_크기확인.Name = "lbl_크기확인";
-            this.lbl_크기확인.Size = new System.Drawing.Size(25, 10);
-            this.lbl_크기확인.TabIndex = 47;
+            this.lbl_몸통크기.BackColor = System.Drawing.Color.Coral;
+            this.lbl_몸통크기.Location = new System.Drawing.Point(125, 20);
+            this.lbl_몸통크기.Name = "lbl_몸통크기";
+            this.lbl_몸통크기.Size = new System.Drawing.Size(25, 0);
+            this.lbl_몸통크기.TabIndex = 48;
+            // 
+            // btn_몸통확인
+            // 
+            this.btn_몸통확인.Location = new System.Drawing.Point(6, 20);
+            this.btn_몸통확인.Name = "btn_몸통확인";
+            this.btn_몸통확인.Size = new System.Drawing.Size(112, 27);
+            this.btn_몸통확인.TabIndex = 4;
+            this.btn_몸통확인.Text = "1번봉 크기확인";
+            this.btn_몸통확인.UseVisualStyleBackColor = true;
+            this.btn_몸통확인.Click += new System.EventHandler(this.btn_몸통확인_Click);
+            // 
+            // btn_테스트작동
+            // 
+            this.btn_테스트작동.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_테스트작동.Location = new System.Drawing.Point(255, 177);
+            this.btn_테스트작동.Name = "btn_테스트작동";
+            this.btn_테스트작동.Size = new System.Drawing.Size(86, 43);
+            this.btn_테스트작동.TabIndex = 48;
+            this.btn_테스트작동.Text = "test작동";
+            this.btn_테스트작동.UseVisualStyleBackColor = true;
+            this.btn_테스트작동.Click += new System.EventHandler(this.btn_테스트작동_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 494);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -711,7 +846,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(850, 450);
             this.Name = "Form1";
-            this.Text = "신호인식자동매매_Test_1.0.1";
+            this.Text = "신호인식자동매매_Test_1.0.2";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -720,9 +855,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_몸통크기)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_몸통크기)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_포인트값)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -784,6 +922,17 @@
         private System.Windows.Forms.Label lbl_크기확인;
         private System.Windows.Forms.CheckBox chk_몸통크기;
         private System.Windows.Forms.NumericUpDown nud_몸통크기;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label lbl_1픽셀은;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label lbl_1포인트는;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown nud_포인트값;
+        private System.Windows.Forms.Label lbl_봉크기;
+        private System.Windows.Forms.Label lbl_몸통크기;
+        private System.Windows.Forms.Button btn_몸통확인;
+        private System.Windows.Forms.Button btn_테스트작동;
     }
 }
 

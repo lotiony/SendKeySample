@@ -115,6 +115,12 @@ namespace WindowsFormsApp1
                 {
                     _status.Contracts = cnt;
                     lbl_수량.Text = cnt.ToString();
+
+                    // 현재 진입수량이  셋팅된 기준계약수보다 많다면 무조건 청산해 버린다.
+                    if (cnt > numericUpDown1.Value)
+                    {
+                        청산_Click(null, null);
+                    }
                 }
                 else
                 {
@@ -367,7 +373,39 @@ namespace WindowsFormsApp1
             pictureBox2.Image = sbmp;
         }
 
+        private void btn_테스트작동_Click(object sender, EventArgs e)
+        {
+            if (btn_테스트작동.Text == "test작동")
+            {
+                if (dtp_시작시간.Value < DateTime.Now)
+                {
+                    dtp_시작시간.Value = DateTime.Now;
+                    dtp_종료시간.Value = DateTime.Now.AddHours(4);
+                }
 
+                btn_테스트작동.Text = "test중지";
+
+                // 기본 인식 스레드
+                cr = new ChartRecognition(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor, 100, 1, 500);
+                cr.UpdateEvent += Cr_UpdateEvent;
+                cr.Buy += Cr_Buy;
+                cr.Sell += Cr_Sell;
+                cr.Clear += Cr_Clear;
+                cr.Start();
+
+                진입중 = false;
+                lbl_진입중.Visible = false;
+            }
+            else
+            {
+                btn_테스트작동.Text = "test작동";
+                cr.Stop();
+                PreviewPicture();
+                cr = null;
+            }
+
+
+        }
         private void btn_자동주문_Click(object sender, EventArgs e)
         {
             if (btn_자동주문.Text == "작동시작")
@@ -726,6 +764,41 @@ namespace WindowsFormsApp1
             if (cr != null) cr.MinRecogSize = (int)nud_몸통크기.Value;
             if (crSub != null) crSub.MinRecogSize = (int)nud_몸통크기.Value;
         }
+
+        int bodySize = 0;
+        private void btn_몸통확인_Click(object sender, EventArgs e)
+        {
+            bodySize = cr?.BodySize ?? 0;
+
+            lbl_봉크기.Text = $"봉크기 : {bodySize}픽셀";
+            lbl_몸통크기.Height = bodySize;
+
+            CalculatePixelToPoint();
+
+        }
+
+        private void CalculatePixelToPoint()
+        {
+            decimal p = nud_포인트값.Value;
+
+            if (p > 0 && bodySize > 0)
+            {
+                lbl_1포인트는.Text = $"{(bodySize / p):N1} 픽셀";
+                lbl_1픽셀은.Text = $"{(p / bodySize):N1} 포인트";
+            }
+            else
+            {
+                lbl_1포인트는.Text = "-";
+                lbl_1픽셀은.Text = "-";
+            }
+
+        }
+
+        private void nud_포인트값_ValueChanged(object sender, EventArgs e)
+        {
+            CalculatePixelToPoint();
+        }
+
 
         private void ColorTm_Tick(object sender, EventArgs e)
         {

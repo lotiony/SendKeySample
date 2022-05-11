@@ -19,6 +19,7 @@ namespace WindowsFormsApp1
         public byte FromCr { get; set; }
         public int MinRecogSize { get; set; }
         public bool IsCenter { get; set; }
+        public int BodySize { get { return Math.Max(_buyCount, _sellCount); } }
 
         private bool _isBuySignaled = false;
         private bool _isSellSignaled = false;
