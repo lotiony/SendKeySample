@@ -9,21 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TraderTestV2.Model;
 using static TraderTestV2.WinAppServices;
 
 namespace TraderTestV2
 {
-    public partial class Form1 : Form
+    public partial class MainFrm : Form
     {
         protected Status _status;
         protected ChartRecognition cr;
         protected ChartRecognition crSub;
 
+        public Setting valueSetting;
+
         ObservableCollection<ApplicationInfo> applicationInfos;
         ApplicationInfo selectedItem;
         Timer timer;
-        Timer buyTimer;
-        Timer sellTimer;
+        Timer signalResetTimer;
+
         Timer colorTm;
         Timer RunTm;
         Label colorLb;
@@ -35,7 +38,7 @@ namespace TraderTestV2
         IntPtr orderCountHandle { get; set; }
         Bitmap screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
 
-        public Form1()
+        public MainFrm()
         {
             InitializeComponent();
 
@@ -43,13 +46,9 @@ namespace TraderTestV2
             timer.Interval = 200;
             timer.Tick += Timer_Tick;
 
-            buyTimer = new Timer();
-            buyTimer.Interval = 3000;
-            buyTimer.Tick += BuyTimer_Tick;
-
-            sellTimer = new Timer();
-            sellTimer.Interval = 3000;
-            sellTimer.Tick += SellTimer_Tick;
+            signalResetTimer = new Timer();
+            signalResetTimer.Interval = 3000;
+            signalResetTimer.Tick += SignalResetTimer_Tick;
 
             RunTm = new Timer();
             RunTm.Interval = 1000;
@@ -58,6 +57,9 @@ namespace TraderTestV2
 
             _status = new Status();
 
+            grp_몸통인식설정.Enabled = true;
+            grp_신호인식설정.Enabled = false;
+            rb_몸통인식.Checked = true;
             LoadInfo();
         }
 
@@ -72,16 +74,22 @@ namespace TraderTestV2
             }
         }
 
-        private void SellTimer_Tick(object sender, EventArgs e)
+
+        private void SignalResetTimer_Tick(object sender, EventArgs e)
         {
-            lbl_매도발생.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
-            sellTimer.Stop();
+            SignalClear();
         }
 
-        private void BuyTimer_Tick(object sender, EventArgs e)
+        private void SignalClear()
         {
-            lbl_매수발생.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
-            buyTimer.Stop();
+            this.Invoke(new MethodInvoker(delegate () {
+                lbl_양봉발생.Visible = false;
+                lbl_음봉발생.Visible = false;
+                lbl_매수신호발생.Visible = false;
+                lbl_매도신호발생.Visible = false;
+                lbl_매수청산신호발생.Visible = false;
+                lbl_매도청산신호발생.Visible = false;
+            }));
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -182,8 +190,6 @@ namespace TraderTestV2
             lbl_handle_수량.Text = FindSubHandle(selectedHandle, HtsControls.LBL_CONT).ToString();
             lbl_handle_진입단가.Text = FindSubHandle(selectedHandle, HtsControls.LBL_PRICE).ToString();
             lbl_handle_평가손익.Text = FindSubHandle(selectedHandle, HtsControls.LBL_PGSI).ToString();
-
-            
 
             if (lbl_handle_계약수.Text != "0")
             {
@@ -293,16 +299,13 @@ namespace TraderTestV2
                 SaveInfo();
                 areaForm.Hide();
                 PreviewPicture();
-                cr?.Update(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
+                cr?.Update(rect);
                 cr?.Start();
 
                 Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
-                crSub?.Update(sArea, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor);
+                crSub?.Update(sArea);
                 crSub?.Start();
-
             }
-
-
         }
 
         private void SaveInfo()
@@ -314,8 +317,21 @@ namespace TraderTestV2
             Properties.Settings.Default.ColorB = lbl_매수컬러.BackColor;
             Properties.Settings.Default.ColorS = lbl_매도컬러.BackColor;
             Properties.Settings.Default.BodySize = (int)nud_몸통크기.Value;
+            Properties.Settings.Default.ColorP = lbl_양봉컬러.BackColor;
+            Properties.Settings.Default.ColorN = lbl_음봉컬러.BackColor;
+            Properties.Settings.Default.ColorBO = lbl_매수청산컬러.BackColor;
+            Properties.Settings.Default.ColorSO = lbl_매도청산컬러.BackColor;
 
             Properties.Settings.Default.Save();
+
+            valueSetting.RecogArea = new Rectangle(rect.Location, rect.Size);
+            valueSetting.BodySize = (int)nud_몸통크기.Value;
+            valueSetting.Body_P = lbl_양봉컬러.BackColor;
+            valueSetting.Body_N = lbl_음봉컬러.BackColor;
+            valueSetting.Buy = lbl_매수컬러.BackColor;
+            valueSetting.Sell = lbl_매도컬러.BackColor;
+            valueSetting.BuyOut = lbl_매수청산컬러.BackColor;
+            valueSetting.SellOut = lbl_매도청산컬러.BackColor;
         }
 
         private void LoadInfo()
@@ -348,6 +364,33 @@ namespace TraderTestV2
                 lbl_매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
             }
 
+            if (Properties.Settings.Default.ColorBO != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorBO;
+                lbl_매수청산컬러.BackColor = c;
+                lbl_매수청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+
+            if (Properties.Settings.Default.ColorSO != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorSO;
+                lbl_매도청산컬러.BackColor = c;
+                lbl_매도청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+
+            if (Properties.Settings.Default.ColorP != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorP;
+                lbl_양봉컬러.BackColor = c;
+                lbl_양봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+            if (Properties.Settings.Default.ColorN != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorN;
+                lbl_음봉컬러.BackColor = c;
+                lbl_음봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+
             if (Properties.Settings.Default.BodySize != 0)
             {
                 nud_몸통크기.Value = Properties.Settings.Default.BodySize;
@@ -357,6 +400,17 @@ namespace TraderTestV2
             진입중 = false;
             lbl_진입중.Visible = false;
             lbl_크기확인.Height = (int)nud_몸통크기.Value;
+
+            valueSetting = new Setting(new Rectangle(rect.Location, rect.Size)
+                                       , lbl_양봉컬러.BackColor
+                                       , lbl_음봉컬러.BackColor
+                                       , lbl_매수컬러.BackColor
+                                       , lbl_매도컬러.BackColor
+                                       , lbl_매수청산컬러.BackColor
+                                       , lbl_매도청산컬러.BackColor
+                                       , (int)nud_몸통크기.Value
+                                       , rb_몸통인식.Checked ? 인식모드.몸통인식 : 인식모드.신호인식
+                                       );
         }
 
         private void PreviewPicture()
@@ -373,39 +427,6 @@ namespace TraderTestV2
             pictureBox2.Image = sbmp;
         }
 
-        private void btn_테스트작동_Click(object sender, EventArgs e)
-        {
-            if (btn_테스트작동.Text == "test작동")
-            {
-                if (dtp_시작시간.Value < DateTime.Now)
-                {
-                    dtp_시작시간.Value = DateTime.Now;
-                    dtp_종료시간.Value = DateTime.Now.AddHours(4);
-                }
-
-                btn_테스트작동.Text = "test중지";
-
-                // 기본 인식 스레드
-                cr = new ChartRecognition(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor, 100, 1, 500);
-                cr.UpdateEvent += Cr_UpdateEvent;
-                cr.Buy += Cr_Buy;
-                cr.Sell += Cr_Sell;
-                cr.Clear += Cr_Clear;
-                cr.Start();
-
-                진입중 = false;
-                lbl_진입중.Visible = false;
-            }
-            else
-            {
-                btn_테스트작동.Text = "test작동";
-                cr.Stop();
-                PreviewPicture();
-                cr = null;
-            }
-
-
-        }
         private void btn_자동주문_Click(object sender, EventArgs e)
         {
             if (btn_자동주문.Text == "작동시작")
@@ -419,20 +440,21 @@ namespace TraderTestV2
                 Ctrl_자동주문(true);
                 
                 // 기본 인식 스레드
-                cr = new ChartRecognition(rect, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor, 10, 1, 5);
+                cr = new ChartRecognition(valueSetting, 5, 1);
                 cr.UpdateEvent += Cr_UpdateEvent;
                 cr.Buy += Cr_Buy;
                 cr.Sell += Cr_Sell;
-                cr.Clear += Cr_Clear;
+                cr.Clear += SignalClear;
                 cr.Start();
 
                 /// 보조 확인 영역은 본 지정 영역의 바로 좌측에 동일 사이즈
                 Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
-                crSub = new ChartRecognition(sArea, lbl_매수컬러.BackColor, lbl_매도컬러.BackColor, 50, 2, 5);
+                crSub = new ChartRecognition(valueSetting, 50, 2);
+                crSub.Update(sArea);
                 crSub.UpdateEvent += CrSub_UpdateEvent;
                 crSub.Buy += Cr_Buy;
                 crSub.Sell += Cr_Sell;
-                crSub.Clear += CrSub_Clear;
+                crSub.Clear += SignalClear;
                 crSub.Start();
 
 
@@ -460,39 +482,18 @@ namespace TraderTestV2
             {
                 btn_자동주문.Text = "작동중지";
                 자동실행중 = true;
-                chk_자동매도.Enabled = true;
-                chk_자동매수.Enabled = true;
                 chk_자동스위칭.Enabled = true;
-                chk_자동매도.Checked = true;
-                chk_자동매수.Checked = true;
                 chk_자동스위칭.Checked = true;
-                chk_몸통크기.Enabled = true;
                 nud_몸통크기.Enabled = true;
             }
             else
             {
                 btn_자동주문.Text = "작동시작";
                 자동실행중 = false;
-                chk_자동매도.Enabled = false;
-                chk_자동매수.Enabled = false;
                 chk_자동스위칭.Enabled = false;
-                chk_자동매도.Checked = false;
-                chk_자동매수.Checked = false;
                 chk_자동스위칭.Checked = false;
-                chk_몸통크기.Enabled = false;
                 nud_몸통크기.Enabled = false;
             }
-        }
-
-        private void Cr_Clear()
-        {
-            this.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
-            this.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
-        }
-        private void CrSub_Clear()
-        {
-            this.Invoke(new MethodInvoker(delegate () { lbl_매도발생.Visible = false; }));
-            this.Invoke(new MethodInvoker(delegate () { lbl_매수발생.Visible = false; }));
         }
 
         private void Cr_Sell(byte fromCr)
@@ -540,7 +541,7 @@ namespace TraderTestV2
                 /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
                 if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
                 {
-                    lbl_매수발생.Visible = true;
+                    lbl_양봉발생.Visible = true;
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
                         if (자동매수)   // chk_자동매수 = true 인 경우에만 진행
@@ -648,46 +649,71 @@ namespace TraderTestV2
 
 
 
-        private void chk_자동주문_CheckedChanged(object sender, EventArgs e)
-        {
-            this.자동매수 = chk_자동매수.Checked;
-        }
-
-        private void chk_자동스위칭_CheckedChanged(object sender, EventArgs e)
-        {
-            this.자동스위칭 = chk_자동스위칭.Checked;
-        }
-
-        private void chk_자동매도_CheckedChanged(object sender, EventArgs e)
-        {
-            this.자동매도 = chk_자동매도.Checked;
-        }
-
-
         private void btn_매수설정_Click(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.Hand;
-            Ctrl_자동주문(false);
-            colorTm = new Timer();
-            colorTm.Interval = 50;
-            colorTm.Tick += ColorTm_Tick;
-
-            colorLb = lbl_매수컬러;
-            signalLb = lbl_매수신호;
-
-            colorTm.Start();
+            //this.Cursor = Cursors.Hand;
+            //Ctrl_자동주문(false);
+            SetColor(컬러설정.매수);
         }
 
         private void btn_매도설정_Click(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.Hand;
-            Ctrl_자동주문(false);
+            SetColor(컬러설정.매도);
+        }
+
+        private void btn_양봉설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.양봉);
+        }
+
+        private void btn_음봉설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.음봉);
+        }
+
+        private void btn_매수청산설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.매수청산);
+        }
+
+        private void btn_매도청산설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.매도청산);
+        }
+
+        private void SetColor(컬러설정 type)
+        {
+            switch (type)
+            {
+                case 컬러설정.양봉:
+                    this.colorLb = lbl_양봉컬러;
+                    this.signalLb = lbl_양봉신호;
+                    break;
+                case 컬러설정.음봉:
+                    this.colorLb = lbl_음봉컬러;
+                    this.signalLb = lbl_음봉신호;
+                    break;
+                case 컬러설정.매수:
+                    this.colorLb = lbl_매수컬러;
+                    this.signalLb = lbl_매수신호;
+                    break;
+                case 컬러설정.매도:
+                    this.colorLb = lbl_매도컬러;
+                    this.signalLb = lbl_매도신호;
+                    break;
+                case 컬러설정.매수청산:
+                    this.colorLb = lbl_매수청산컬러;
+                    this.signalLb = lbl_매수청산신호;
+                    break;
+                case 컬러설정.매도청산:
+                    this.colorLb = lbl_매도청산컬러;
+                    this.signalLb = lbl_매도청산신호;
+                    break;
+            }
+
             colorTm = new Timer();
             colorTm.Interval = 50;
             colorTm.Tick += ColorTm_Tick;
-
-            colorLb = lbl_매도컬러;
-            signalLb = lbl_매도신호;
 
             colorTm.Start();
         }
@@ -709,7 +735,7 @@ namespace TraderTestV2
                 //    // 단일키 사용시
                 //    MessageBox.Show("f5");
                 //    break;
-                case Keys.Escape:
+                case Keys.ControlKey:
                     this.Cursor = Cursors.Default;
                     colorTm.Stop();
                     SaveInfo();
@@ -735,27 +761,6 @@ namespace TraderTestV2
 
         }
 
-        private void chk_몸통크기_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chk_몸통크기.Checked)
-            {
-                /// 메인 감시 영역의 몸통크기만 보는 모드일 땐 보조감지영역을 꺼준다.
-                /// 그리고 메인감지영역의 정중앙이 아닌 오른쪽 2/3 지점을 읽어준다 (위아래 꼬리가 인식되지 않도록)
-                crSub?.Stop();
-                CrSub_Clear();
-                CrSub_UpdateEvent();
-
-                cr.MinRecogSize = (int)nud_몸통크기.Value;
-                cr.IsCenter = false;
-            }
-            else
-            {
-                cr.MinRecogSize = (int)nud_몸통크기.Value;
-                cr.IsCenter = true;
-                crSub?.Start();
-            }
-        }
-
         private void nud_몸통크기_ValueChanged(object sender, EventArgs e)
         {
             lbl_크기확인.Height = (int)nud_몸통크기.Value;
@@ -765,40 +770,21 @@ namespace TraderTestV2
             if (crSub != null) crSub.MinRecogSize = (int)nud_몸통크기.Value;
         }
 
-        int bodySize = 0;
-        private void btn_몸통확인_Click(object sender, EventArgs e)
+        private void rb_몸통인식_CheckedChanged(object sender, EventArgs e)
         {
-            bodySize = cr?.BodySize ?? 0;
-
-            lbl_봉크기.Text = $"봉크기 : {bodySize}픽셀";
-            lbl_몸통크기.Height = bodySize;
-
-            CalculatePixelToPoint();
-
+            grp_몸통인식설정.Enabled = true;
+            grp_신호인식설정.Enabled = false;
+            valueSetting.RecogMode = 인식모드.몸통인식;
         }
 
-        private void CalculatePixelToPoint()
+        private void rb_신호인식_CheckedChanged(object sender, EventArgs e)
         {
-            decimal p = nud_포인트값.Value;
-
-            if (p > 0 && bodySize > 0)
-            {
-                lbl_1포인트는.Text = $"{(bodySize / p):N1} 픽셀";
-                lbl_1픽셀은.Text = $"{(p / bodySize):N1} 포인트";
-            }
-            else
-            {
-                lbl_1포인트는.Text = "-";
-                lbl_1픽셀은.Text = "-";
-            }
-
+            grp_몸통인식설정.Enabled = false;
+            grp_신호인식설정.Enabled = true;
+            valueSetting.RecogMode = 인식모드.신호인식;
         }
 
-        private void nud_포인트값_ValueChanged(object sender, EventArgs e)
-        {
-            CalculatePixelToPoint();
-        }
-
+       
 
         private void ColorTm_Tick(object sender, EventArgs e)
         {

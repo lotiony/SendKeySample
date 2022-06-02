@@ -6,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using TraderTestV2.Model;
 
 namespace TraderTestV2
 {
     public class ChartRecognition
     {
-        public Rectangle ChartArea { get; set; }
-        public Color BuyColor { get; set; }
-        public Color SellColor { get; set; }
+        public Setting Set { get; set; }
+        public Rectangle RecogArea { get; set; }
         public Bitmap CaptureBitmap { get { return bmp; } }
         public bool IsSignaled { get { return (_isBuySignaled || _isSellSignaled); } }
         public byte FromCr { get; set; }
-        public int MinRecogSize { get; set; }
-        public bool IsCenter { get; set; }
+        public int MinRecogSize { get; set; } = 10;
+        public bool IsCenter { get { return this.Set.RecogMode == 인식모드.신호인식 ? true : false; } }
         public int BodySize { get { return Math.Max(_buyCount, _sellCount); } }
 
         private bool _isBuySignaled = false;
@@ -42,46 +42,51 @@ namespace TraderTestV2
         public event deleSell Sell;
         public event deleClear Clear;
 
-        public ChartRecognition(Rectangle chartArea, Color buyColor, Color sellColor, double interval, byte fromCr, int minRecogSize = 5)
+        public ChartRecognition(Setting valSet, double interval, byte fromCr)
         {
-            ChartArea = chartArea;
-            BuyColor = buyColor;
-            SellColor = sellColor;
+            this.Set = valSet;
+            // 인식영역 박스만 별도 인스턴스로 관리
+            this.RecogArea = new Rectangle(valSet.RecogArea.Location, valSet.RecogArea.Size);
             this.FromCr = fromCr;
-            this.MinRecogSize = minRecogSize;
-            this.IsCenter = true;
 
             timer = new Timer();
             timer.Interval = interval;
             timer.Elapsed += Timer_Elapsed;
 
-            bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);
-            g = Graphics.FromImage(bmp);
+            bitmap();
+
         }
 
 
-        public void Update(Rectangle chartArea, Color buyColor, Color sellColor)
+        private void bitmap(bool reset = false)
         {
-            ChartArea = chartArea;
-            BuyColor = buyColor;
-            SellColor = sellColor;
-
-            bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);
+            bmp = !reset ?  new Bitmap(RecogArea.Width, RecogArea.Height, PixelFormat.Format24bppRgb) : new Bitmap(1, 1, PixelFormat.Format24bppRgb); 
             g = Graphics.FromImage(bmp);
+        }
+         
+        public void Update(Setting set)
+        {
+            this.Set = set;
+            this.RecogArea = new Rectangle(Set.RecogArea.Location, Set.RecogArea.Size);
+            bitmap();
+        }
+
+        public void Update(Rectangle rect)
+        {
+            this.RecogArea = new Rectangle(rect.Location, rect.Size); ;
+            bitmap();
         }
 
         public void Start()
         {
-            bmp = new Bitmap(ChartArea.Width, ChartArea.Height, PixelFormat.Format24bppRgb);
-            g = Graphics.FromImage(bmp);
+            bitmap();
             timer.Start();
         }
 
         public void Stop()
         {
             timer.Stop();
-            bmp = new Bitmap(1, 1, PixelFormat.Format24bppRgb);
-            g = Graphics.FromImage(bmp);
+            bitmap(true);
         }
 
 
@@ -101,9 +106,25 @@ namespace TraderTestV2
         private void ImageRecognize()
         {
             this.Clear();
-            int center = IsCenter ? (int)(bmp.Width / 2) : (int)(bmp.Width / 3 * 2);
-            this._buyCount = 0;
-            this._sellCount = 0;
+            //int center = IsCenter ? (int)(bmp.Width / 2) : (int)(bmp.Width / 3 * 2);
+            int center = (int)(bmp.Width / 3 * 2);
+
+            Dictionary<Color, int> detect = new Dictionary<Color, int>();
+            switch (Set.RecogMode)
+            {
+                case 인식모드.몸통인식:
+                    detect.Add(Set.Body_P, 0);
+                    detect.Add(Set.Body_N, 0);
+                    break;
+
+                case 인식모드.신호인식:
+                    detect.Add(Set.Buy, 0);
+                    detect.Add(Set.Sell, 0);
+                    detect.Add(Set.BuyOut, 0);
+                    detect.Add(Set.SellOut, 0);
+                    break;
+            }
+
 
             using (Bitmap newBmp = bmp.Clone(new Rectangle(center, 0, 1, bmp.Height), bmp.PixelFormat))
             {
@@ -124,6 +145,15 @@ namespace TraderTestV2
                             byte b = p[0];
                             byte g = p[1];
                             byte r = p[2];
+
+                            foreach (var item in detect)
+                            {
+                                Color col = Color.FromArgb(r, g, b);
+                                if (detect.Keys.Contains(col))
+                                {
+                                    
+                                }
+                            }
 
                             if ((BuyColor.R == r) && (BuyColor.G == g) && (BuyColor.B == b)) _buyCount += 1;
                             if ((SellColor.R == r) && (SellColor.G == g) && (SellColor.B == b)) _sellCount += 1;
@@ -149,7 +179,7 @@ namespace TraderTestV2
         {
             try
             {
-                g.CopyFromScreen(ChartArea.Left, ChartArea.Top, 0, 0, ChartArea.Size, CopyPixelOperation.SourceCopy);
+                g.CopyFromScreen(Set.RecogArea.Left, Set.RecogArea.Top, 0, 0, Set.RecogArea.Size, CopyPixelOperation.SourceCopy);
 
                 this.UpdateEvent();
             }

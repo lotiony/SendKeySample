@@ -106,5 +106,49 @@ namespace TraderTestV2.Properties {
                 this["BodySize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ColorP {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorP"]));
+            }
+            set {
+                this["ColorP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ColorN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorN"]));
+            }
+            set {
+                this["ColorN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ColorBO {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorBO"]));
+            }
+            set {
+                this["ColorBO"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ColorSO {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorSO"]));
+            }
+            set {
+                this["ColorSO"] = value;
+            }
+        }
     }
 }
