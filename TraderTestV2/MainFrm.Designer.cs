@@ -97,7 +97,6 @@
             this.btn_인식영역선택 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.chk_자동스위칭 = new System.Windows.Forms.CheckBox();
             this.btn_일괄취소 = new System.Windows.Forms.Button();
             this.lbl_진입중 = new System.Windows.Forms.Label();
             this.lbl_현재시간 = new System.Windows.Forms.Label();
@@ -480,7 +479,7 @@
             // 
             // lbl_매도청산신호발생
             // 
-            this.lbl_매도청산신호발생.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lbl_매도청산신호발생.BackColor = System.Drawing.Color.Lime;
             this.lbl_매도청산신호발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lbl_매도청산신호발생.Location = new System.Drawing.Point(350, 121);
             this.lbl_매도청산신호발생.Name = "lbl_매도청산신호발생";
@@ -500,7 +499,7 @@
             // 
             // lbl_매수청산신호발생
             // 
-            this.lbl_매수청산신호발생.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lbl_매수청산신호발생.BackColor = System.Drawing.Color.Lime;
             this.lbl_매수청산신호발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lbl_매수청산신호발생.Location = new System.Drawing.Point(350, 93);
             this.lbl_매수청산신호발생.Name = "lbl_매수청산신호발생";
@@ -519,7 +518,7 @@
             // 
             // lbl_매도신호발생
             // 
-            this.lbl_매도신호발생.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lbl_매도신호발생.BackColor = System.Drawing.Color.Lime;
             this.lbl_매도신호발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lbl_매도신호발생.Location = new System.Drawing.Point(350, 45);
             this.lbl_매도신호발생.Name = "lbl_매도신호발생";
@@ -538,7 +537,7 @@
             // 
             // lbl_매수신호발생
             // 
-            this.lbl_매수신호발생.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lbl_매수신호발생.BackColor = System.Drawing.Color.Lime;
             this.lbl_매수신호발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lbl_매수신호발생.Location = new System.Drawing.Point(350, 14);
             this.lbl_매수신호발생.Name = "lbl_매수신호발생";
@@ -642,7 +641,7 @@
             // 
             // lbl_음봉발생
             // 
-            this.lbl_음봉발생.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lbl_음봉발생.BackColor = System.Drawing.Color.Lime;
             this.lbl_음봉발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lbl_음봉발생.Location = new System.Drawing.Point(350, 78);
             this.lbl_음봉발생.Name = "lbl_음봉발생";
@@ -724,7 +723,6 @@
             // 
             // nud_몸통크기
             // 
-            this.nud_몸통크기.Enabled = false;
             this.nud_몸통크기.Location = new System.Drawing.Point(125, 15);
             this.nud_몸통크기.Minimum = new decimal(new int[] {
             3,
@@ -743,7 +741,7 @@
             // 
             // lbl_양봉발생
             // 
-            this.lbl_양봉발생.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lbl_양봉발생.BackColor = System.Drawing.Color.Lime;
             this.lbl_양봉발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lbl_양봉발생.Location = new System.Drawing.Point(350, 46);
             this.lbl_양봉발생.Name = "lbl_양봉발생";
@@ -855,7 +853,7 @@
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox2.Location = new System.Drawing.Point(945, 18);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(41, 198);
+            this.pictureBox2.Size = new System.Drawing.Size(41, 335);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 44;
             this.pictureBox2.TabStop = false;
@@ -865,21 +863,10 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(985, 18);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(41, 198);
+            this.pictureBox1.Size = new System.Drawing.Size(41, 335);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 25;
             this.pictureBox1.TabStop = false;
-            // 
-            // chk_자동스위칭
-            // 
-            this.chk_자동스위칭.AutoSize = true;
-            this.chk_자동스위칭.Enabled = false;
-            this.chk_자동스위칭.Location = new System.Drawing.Point(909, 570);
-            this.chk_자동스위칭.Name = "chk_자동스위칭";
-            this.chk_자동스위칭.Size = new System.Drawing.Size(164, 16);
-            this.chk_자동스위칭.TabIndex = 39;
-            this.chk_자동스위칭.Text = "포지션 보유중이면 스위칭";
-            this.chk_자동스위칭.UseVisualStyleBackColor = true;
             // 
             // btn_일괄취소
             // 
@@ -1217,7 +1204,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1035, 563);
+            this.ClientSize = new System.Drawing.Size(1044, 568);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -1226,7 +1213,6 @@
             this.Controls.Add(this.lbl_작동중타이틀);
             this.Controls.Add(this.btn_일괄취소);
             this.Controls.Add(this.btn_자동주문);
-            this.Controls.Add(this.chk_자동스위칭);
             this.Controls.Add(this.lbl_진입중);
             this.Controls.Add(this.lbl_현재시간);
             this.Controls.Add(this.label7);
@@ -1313,7 +1299,6 @@
         private System.Windows.Forms.Label lbl_매수컬러;
         private System.Windows.Forms.Label lbl_매도컬러;
         private System.Windows.Forms.Label lbl_양봉발생;
-        private System.Windows.Forms.CheckBox chk_자동스위칭;
         private System.Windows.Forms.Label lbl_현재시간;
         private System.Windows.Forms.Label lbl_작동중타이틀;
         private System.Windows.Forms.Button btn_일괄취소;
