@@ -150,5 +150,27 @@ namespace TraderTestV2.Properties {
                 this["ColorSO"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ColorCOIB {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorCOIB"]));
+            }
+            set {
+                this["ColorCOIB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ColorCOIS {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorCOIS"]));
+            }
+            set {
+                this["ColorCOIS"] = value;
+            }
+        }
     }
 }

@@ -130,6 +130,16 @@
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.lbl_COI매도발생 = new System.Windows.Forms.Label();
+            this.lbl_COI매도컬러 = new System.Windows.Forms.Label();
+            this.lbl_COI매수컬러 = new System.Windows.Forms.Label();
+            this.lbl_COI매도신호 = new System.Windows.Forms.Label();
+            this.lbl_COI매수신호 = new System.Windows.Forms.Label();
+            this.btn_COI매도설정 = new System.Windows.Forms.Button();
+            this.btn_COI매수설정 = new System.Windows.Forms.Button();
+            this.lbl_COI매수발생 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -397,7 +407,7 @@
             this.groupBox4.Controls.Add(this.btn_인식영역선택);
             this.groupBox4.Location = new System.Drawing.Point(511, 14);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(428, 401);
+            this.groupBox4.Size = new System.Drawing.Size(428, 456);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "메인차트인식영역";
@@ -424,7 +434,7 @@
             this.grp_신호인식설정.Controls.Add(this.lbl_매도청산신호);
             this.grp_신호인식설정.Controls.Add(this.btn_매도청산설정);
             this.grp_신호인식설정.Controls.Add(this.lbl_매수청산신호);
-            this.grp_신호인식설정.Location = new System.Drawing.Point(8, 244);
+            this.grp_신호인식설정.Location = new System.Drawing.Point(8, 296);
             this.grp_신호인식설정.Name = "grp_신호인식설정";
             this.grp_신호인식설정.Size = new System.Drawing.Size(411, 149);
             this.grp_신호인식설정.TabIndex = 73;
@@ -620,6 +630,16 @@
             // 
             // grp_몸통인식설정
             // 
+            this.grp_몸통인식설정.Controls.Add(this.lbl_COI매도발생);
+            this.grp_몸통인식설정.Controls.Add(this.lbl_COI매도컬러);
+            this.grp_몸통인식설정.Controls.Add(this.lbl_COI매수컬러);
+            this.grp_몸통인식설정.Controls.Add(this.lbl_COI매도신호);
+            this.grp_몸통인식설정.Controls.Add(this.lbl_COI매수신호);
+            this.grp_몸통인식설정.Controls.Add(this.btn_COI매도설정);
+            this.grp_몸통인식설정.Controls.Add(this.btn_COI매수설정);
+            this.grp_몸통인식설정.Controls.Add(this.lbl_COI매수발생);
+            this.grp_몸통인식설정.Controls.Add(this.label33);
+            this.grp_몸통인식설정.Controls.Add(this.label34);
             this.grp_몸통인식설정.Controls.Add(this.lbl_음봉발생);
             this.grp_몸통인식설정.Controls.Add(this.lbl_음봉컬러);
             this.grp_몸통인식설정.Controls.Add(this.lbl_양봉컬러);
@@ -635,7 +655,7 @@
             this.grp_몸통인식설정.Controls.Add(this.label29);
             this.grp_몸통인식설정.Location = new System.Drawing.Point(8, 128);
             this.grp_몸통인식설정.Name = "grp_몸통인식설정";
-            this.grp_몸통인식설정.Size = new System.Drawing.Size(411, 107);
+            this.grp_몸통인식설정.Size = new System.Drawing.Size(411, 168);
             this.grp_몸통인식설정.TabIndex = 72;
             this.grp_몸통인식설정.TabStop = false;
             // 
@@ -871,7 +891,7 @@
             // btn_일괄취소
             // 
             this.btn_일괄취소.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_일괄취소.Location = new System.Drawing.Point(852, 503);
+            this.btn_일괄취소.Location = new System.Drawing.Point(378, 464);
             this.btn_일괄취소.Name = "btn_일괄취소";
             this.btn_일괄취소.Size = new System.Drawing.Size(91, 27);
             this.btn_일괄취소.TabIndex = 43;
@@ -883,7 +903,7 @@
             // 
             this.lbl_진입중.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.lbl_진입중.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbl_진입중.Location = new System.Drawing.Point(769, 503);
+            this.lbl_진입중.Location = new System.Drawing.Point(295, 464);
             this.lbl_진입중.Name = "lbl_진입중";
             this.lbl_진입중.Size = new System.Drawing.Size(82, 27);
             this.lbl_진입중.TabIndex = 42;
@@ -894,7 +914,7 @@
             // lbl_현재시간
             // 
             this.lbl_현재시간.BackColor = System.Drawing.Color.White;
-            this.lbl_현재시간.Location = new System.Drawing.Point(582, 474);
+            this.lbl_현재시간.Location = new System.Drawing.Point(108, 435);
             this.lbl_현재시간.Name = "lbl_현재시간";
             this.lbl_현재시간.Size = new System.Drawing.Size(177, 16);
             this.lbl_현재시간.TabIndex = 41;
@@ -903,7 +923,7 @@
             // lbl_작동중타이틀
             // 
             this.lbl_작동중타이틀.AutoSize = true;
-            this.lbl_작동중타이틀.Location = new System.Drawing.Point(525, 476);
+            this.lbl_작동중타이틀.Location = new System.Drawing.Point(51, 437);
             this.lbl_작동중타이틀.Name = "lbl_작동중타이틀";
             this.lbl_작동중타이틀.Size = new System.Drawing.Size(53, 12);
             this.lbl_작동중타이틀.TabIndex = 40;
@@ -912,7 +932,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(691, 427);
+            this.label8.Location = new System.Drawing.Point(217, 388);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 24;
@@ -921,7 +941,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(525, 427);
+            this.label7.Location = new System.Drawing.Point(51, 388);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 23;
@@ -931,7 +951,7 @@
             // 
             this.dtp_종료시간.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtp_종료시간.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_종료시간.Location = new System.Drawing.Point(690, 442);
+            this.dtp_종료시간.Location = new System.Drawing.Point(216, 403);
             this.dtp_종료시간.Name = "dtp_종료시간";
             this.dtp_종료시간.Size = new System.Drawing.Size(161, 21);
             this.dtp_종료시간.TabIndex = 22;
@@ -940,7 +960,7 @@
             // 
             this.dtp_시작시간.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtp_시작시간.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_시작시간.Location = new System.Drawing.Point(527, 442);
+            this.dtp_시작시간.Location = new System.Drawing.Point(53, 403);
             this.dtp_시작시간.Name = "dtp_시작시간";
             this.dtp_시작시간.Size = new System.Drawing.Size(157, 21);
             this.dtp_시작시간.TabIndex = 21;
@@ -948,7 +968,7 @@
             // btn_자동주문
             // 
             this.btn_자동주문.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_자동주문.Location = new System.Drawing.Point(527, 493);
+            this.btn_자동주문.Location = new System.Drawing.Point(53, 454);
             this.btn_자동주문.Name = "btn_자동주문";
             this.btn_자동주문.Size = new System.Drawing.Size(212, 43);
             this.btn_자동주문.TabIndex = 20;
@@ -1200,6 +1220,100 @@
             this.pictureBox3.TabIndex = 53;
             this.pictureBox3.TabStop = false;
             // 
+            // lbl_COI매도발생
+            // 
+            this.lbl_COI매도발생.BackColor = System.Drawing.Color.Lime;
+            this.lbl_COI매도발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_COI매도발생.Location = new System.Drawing.Point(350, 139);
+            this.lbl_COI매도발생.Name = "lbl_COI매도발생";
+            this.lbl_COI매도발생.Size = new System.Drawing.Size(49, 19);
+            this.lbl_COI매도발생.TabIndex = 74;
+            this.lbl_COI매도발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_COI매도발생.Visible = false;
+            // 
+            // lbl_COI매도컬러
+            // 
+            this.lbl_COI매도컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매도컬러.Location = new System.Drawing.Point(125, 139);
+            this.lbl_COI매도컬러.Name = "lbl_COI매도컬러";
+            this.lbl_COI매도컬러.Size = new System.Drawing.Size(20, 18);
+            this.lbl_COI매도컬러.TabIndex = 73;
+            // 
+            // lbl_COI매수컬러
+            // 
+            this.lbl_COI매수컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매수컬러.Location = new System.Drawing.Point(125, 107);
+            this.lbl_COI매수컬러.Name = "lbl_COI매수컬러";
+            this.lbl_COI매수컬러.Size = new System.Drawing.Size(20, 18);
+            this.lbl_COI매수컬러.TabIndex = 72;
+            // 
+            // lbl_COI매도신호
+            // 
+            this.lbl_COI매도신호.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매도신호.Location = new System.Drawing.Point(146, 139);
+            this.lbl_COI매도신호.Name = "lbl_COI매도신호";
+            this.lbl_COI매도신호.Size = new System.Drawing.Size(158, 18);
+            this.lbl_COI매도신호.TabIndex = 71;
+            this.lbl_COI매도신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_COI매수신호
+            // 
+            this.lbl_COI매수신호.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매수신호.Location = new System.Drawing.Point(146, 107);
+            this.lbl_COI매수신호.Name = "lbl_COI매수신호";
+            this.lbl_COI매수신호.Size = new System.Drawing.Size(158, 18);
+            this.lbl_COI매수신호.TabIndex = 70;
+            this.lbl_COI매수신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btn_COI매도설정
+            // 
+            this.btn_COI매도설정.Location = new System.Drawing.Point(310, 136);
+            this.btn_COI매도설정.Name = "btn_COI매도설정";
+            this.btn_COI매도설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_COI매도설정.TabIndex = 69;
+            this.btn_COI매도설정.Text = "설정";
+            this.btn_COI매도설정.UseVisualStyleBackColor = true;
+            this.btn_COI매도설정.Click += new System.EventHandler(this.btn_COI매도설정_Click);
+            // 
+            // btn_COI매수설정
+            // 
+            this.btn_COI매수설정.Location = new System.Drawing.Point(310, 105);
+            this.btn_COI매수설정.Name = "btn_COI매수설정";
+            this.btn_COI매수설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_COI매수설정.TabIndex = 68;
+            this.btn_COI매수설정.Text = "설정";
+            this.btn_COI매수설정.UseVisualStyleBackColor = true;
+            this.btn_COI매수설정.Click += new System.EventHandler(this.btn_COI매수설정_Click);
+            // 
+            // lbl_COI매수발생
+            // 
+            this.lbl_COI매수발생.BackColor = System.Drawing.Color.Lime;
+            this.lbl_COI매수발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_COI매수발생.Location = new System.Drawing.Point(350, 107);
+            this.lbl_COI매수발생.Name = "lbl_COI매수발생";
+            this.lbl_COI매수발생.Size = new System.Drawing.Size(49, 19);
+            this.lbl_COI매수발생.TabIndex = 65;
+            this.lbl_COI매수발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_COI매수발생.Visible = false;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 110);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(102, 12);
+            this.label33.TabIndex = 66;
+            this.label33.Text = "COI매수 컬러설정";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(6, 138);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(102, 12);
+            this.label34.TabIndex = 67;
+            this.label34.Text = "COI매도 컬러설정";
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -1227,7 +1341,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(850, 450);
             this.Name = "MainFrm";
-            this.Text = "신호인식자동매매_Test_1.2.0";
+            this.Text = "신호인식자동매매_Test_1.3.0";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1357,6 +1471,16 @@
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.RadioButton rb_신호인식;
         private System.Windows.Forms.RadioButton rb_몸통인식;
+        private System.Windows.Forms.Label lbl_COI매도발생;
+        private System.Windows.Forms.Label lbl_COI매도컬러;
+        private System.Windows.Forms.Label lbl_COI매수컬러;
+        private System.Windows.Forms.Label lbl_COI매도신호;
+        private System.Windows.Forms.Label lbl_COI매수신호;
+        private System.Windows.Forms.Button btn_COI매도설정;
+        private System.Windows.Forms.Button btn_COI매수설정;
+        private System.Windows.Forms.Label lbl_COI매수발생;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
     }
 }
 

@@ -68,9 +68,6 @@
     <ManifestCertificateThumbprint>72AEFBC35BAA418AB322A6E04FCE0E33C7D9414A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SendKeySample_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>

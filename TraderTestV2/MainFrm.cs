@@ -26,7 +26,7 @@ namespace TraderTestV2
         ApplicationInfo selectedItem;
         Timer timer;
         Timer signalResetTimer;
-        Timer 진입중Timer;
+        //Timer 진입중Timer;
         Timer 시작Timer;
 
         Timer colorTm;
@@ -57,9 +57,9 @@ namespace TraderTestV2
             RunTm.Tick += RunTm_Tick;
             RunTm.Start();
 
-            진입중Timer = new Timer();
-            진입중Timer.Interval = 5000;
-            진입중Timer.Tick += 진입중Timer_Tick;
+            //진입중Timer = new Timer();
+            //진입중Timer.Interval = 5000;
+            //진입중Timer.Tick += 진입중Timer_Tick;
 
             시작Timer = new Timer();
             시작Timer.Interval = 1000;
@@ -140,7 +140,7 @@ namespace TraderTestV2
                 {
                     _status.OldPosType = _status.PosType;
                     진입중 = false;
-                    진입중Timer.Stop();
+                    //진입중Timer.Stop();
                     lbl_진입중.Visible = false;
                 }
             }
@@ -246,9 +246,6 @@ namespace TraderTestV2
             {
                 if (_status.Contracts == 0)
                 {
-                    진입중 = true;
-                    진입중Timer.Start();
-                    lbl_진입중.Visible = true;
                     SendOrder(VKeys.KEY_F12, selectedHandle, orderCountHandle, 기준계약수);
                 }
             }
@@ -261,9 +258,6 @@ namespace TraderTestV2
             {
                 if (_status.Contracts == 0)
                 {
-                    진입중 = true;
-                    진입중Timer.Start();
-                    lbl_진입중.Visible = true;
                     SendOrder(VKeys.KEY_F9, selectedHandle, orderCountHandle, 기준계약수);
                 }
             }
@@ -274,9 +268,6 @@ namespace TraderTestV2
             selectedItem = comboBox1.SelectedItem as ApplicationInfo;
             if (selectedItem != null)
             {
-                진입중 = true;
-                진입중Timer.Start();
-                lbl_진입중.Visible = true;
                 SendOrder(VKeys.KEY_F11, selectedHandle, orderCountHandle, 기준계약수);
             }
         }
@@ -290,11 +281,6 @@ namespace TraderTestV2
                 int 스위칭계약수 = 기준계약수 * 2;
                 if (_status.PosType == CType.없음) 스위칭계약수 = 기준계약수;
 
-                진입중 = true;
-                진입중Timer.Start();
-                lbl_진입중.Visible = true;
-
-
                 SendOrder(VKeys.KEY_F12, selectedHandle, orderCountHandle, 스위칭계약수);
             }
 
@@ -307,11 +293,6 @@ namespace TraderTestV2
             {
                 int 스위칭계약수 = 기준계약수 * 2;
                 if (_status.PosType == CType.없음) 스위칭계약수 = 기준계약수;
-
-                진입중 = true;
-                진입중Timer.Start();
-                lbl_진입중.Visible = true;
-
 
                 SendOrder(VKeys.KEY_F9, selectedHandle, orderCountHandle, 스위칭계약수);
             }
@@ -373,6 +354,8 @@ namespace TraderTestV2
             Properties.Settings.Default.ColorN = lbl_음봉컬러.BackColor;
             Properties.Settings.Default.ColorBO = lbl_매수청산컬러.BackColor;
             Properties.Settings.Default.ColorSO = lbl_매도청산컬러.BackColor;
+            Properties.Settings.Default.ColorCOIB = lbl_COI매수컬러.BackColor;
+            Properties.Settings.Default.ColorCOIS = lbl_COI매도컬러.BackColor;
 
             Properties.Settings.Default.Save();
 
@@ -384,6 +367,8 @@ namespace TraderTestV2
             valueSetting.Sell = lbl_매도컬러.BackColor;
             valueSetting.BuyOut = lbl_매수청산컬러.BackColor;
             valueSetting.SellOut = lbl_매도청산컬러.BackColor;
+            valueSetting.COIBuy = lbl_COI매수컬러.BackColor;
+            valueSetting.COISell = lbl_COI매도컬러.BackColor;
         }
 
         private void LoadInfo()
@@ -442,6 +427,18 @@ namespace TraderTestV2
                 lbl_음봉컬러.BackColor = c;
                 lbl_음봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
             }
+            if (Properties.Settings.Default.ColorCOIB != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorCOIB;
+                lbl_COI매수컬러.BackColor = c;
+                lbl_COI매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
+            if (Properties.Settings.Default.ColorCOIS != Color.FromArgb(0, 0, 0, 0))
+            {
+                Color c = Properties.Settings.Default.ColorCOIS;
+                lbl_COI매도컬러.BackColor = c;
+                lbl_COI매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            }
 
             if (Properties.Settings.Default.BodySize != 0)
             {
@@ -450,7 +447,7 @@ namespace TraderTestV2
 
             기준계약수 = (int)numericUpDown1.Value;
             진입중 = false;
-            진입중Timer.Stop();
+            //진입중Timer.Stop();
             lbl_진입중.Visible = false;
             lbl_크기확인.Height = (int)nud_몸통크기.Value;
 
@@ -461,6 +458,8 @@ namespace TraderTestV2
                                        , lbl_매도컬러.BackColor
                                        , lbl_매수청산컬러.BackColor
                                        , lbl_매도청산컬러.BackColor
+                                       , lbl_COI매수컬러.BackColor
+                                       , lbl_COI매도컬러.BackColor
                                        , (int)nud_몸통크기.Value
                                        , rb_몸통인식.Checked ? 인식모드.몸통인식 : 인식모드.신호인식
                                        );
@@ -526,6 +525,8 @@ namespace TraderTestV2
             cr.BodyN += Cr_BodyN;
             cr.BuyOut += Cr_BuyOut;
             cr.SellOut += Cr_SellOut;
+            cr.CoiBuy += Cr_CoiBuy;
+            cr.CoiSell += Cr_CoiSell;
             cr.Clear += SignalClear;
             cr.Start();
 
@@ -540,13 +541,17 @@ namespace TraderTestV2
             crSub.BodyN += Cr_BodyN;
             crSub.BuyOut += Cr_BuyOut;
             crSub.SellOut += Cr_SellOut;
+            crSub.CoiBuy += Cr_CoiBuy;
+            crSub.CoiSell += Cr_CoiSell;
             crSub.Clear += SignalClear;
             crSub.Start();
 
             진입중 = false;
-            진입중Timer.Stop();
+            //진입중Timer.Stop();
             lbl_진입중.Visible = false;
         }
+
+
 
         /// <summary>
         /// 매도청산
@@ -609,26 +614,36 @@ namespace TraderTestV2
         private void Cr_BodyN(byte fromCr)
         {
             this.Invoke(new MethodInvoker(delegate () {
-                /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
-                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                /// 이 신호는 메인영역에서만 인식시킨다
+                if (fromCr == 1)
                 {
                     lbl_음봉발생.Visible = true;
+
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
                         // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
                         switch (_status.PosType)
                         {
                             case CType.매수:
-                                매도스위칭();
+                                // 매수 포지션을 들고 있을때 음봉이 떴다면 
+                                if (cr?.IsCoiSell ?? false)  // COI 매도로 0선 아래에 내려온경우 매도로 바로 스위칭
+                                    매도스위칭();
+                                else if (cr?.IsCoiBuy ?? false)    // COI 매수로 0선 위에 있다면 그냥 청산만
+                                    일괄청산();
+                                
                                 break;
                             case CType.매도:
                                 // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
                                 break;
                             case CType.없음:
-                                매도진입();
+                                // 무포인데 음봉이 떳다면
+                                if (cr?.IsCoiSell ?? false) // COI 매도로 0선 아래에 내려온경우 매도 진입
+                                    매도진입();
+
                                 break;
                         }
                     }
+
 
                 }
 
@@ -643,8 +658,8 @@ namespace TraderTestV2
         {
             this.Invoke(new MethodInvoker(delegate () {
 
-                /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
-                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                /// 이 신호는 메인영역에서만 인식시킨다
+                if (fromCr == 1)
                 {
                     lbl_양봉발생.Visible = true;
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
@@ -656,10 +671,18 @@ namespace TraderTestV2
                                 // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
                                 break;
                             case CType.매도:
-                                매수스위칭();
+                                // 매도 포지션을 들고 있을때 양봉이 떴다면 
+                                if (cr?.IsCoiBuy ?? false)  // COI 매수로 0선 위에 올라온경우 매수로 바로 스위칭
+                                    매수스위칭(); 
+                                else if (cr?.IsCoiSell ?? false)    // COI 매도로 0선 아래에 있다면  그냥 청산만 
+                                    일괄청산();
+
                                 break;
                             case CType.없음:
-                                매수진입();
+                                // 무포인데 양봉이 떳다면
+                                if (cr?.IsCoiBuy ?? false) // COI 매수로 0선 위에 올라온경우 매수 진입
+                                    매수진입();  
+
                                 break;
                         }
                     }
@@ -667,6 +690,40 @@ namespace TraderTestV2
 
             }));
         }
+
+        /// <summary>
+        /// COI 매수신호 체크 : 실제 진입 및 청산신호로 쓰지는 않음
+        /// </summary>
+        private void Cr_CoiSell(byte fromCr)
+        {
+            this.Invoke(new MethodInvoker(delegate () {
+
+                /// 이 신호는 메인영역에서만 인식시킨다
+                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                {
+                    lbl_COI매수발생.Visible = true;
+                }
+
+            }));
+        }
+
+        /// <summary>
+        /// COI 매도신호 체크 : 실제 진입 및 청산신호로 쓰지는 않음
+        /// </summary>
+
+        private void Cr_CoiBuy(byte fromCr)
+        {
+            this.Invoke(new MethodInvoker(delegate () {
+
+                /// 이 신호는 메인영역에서만 인식시킨다
+                if (fromCr == 1 )
+                {
+                    lbl_COI매도발생.Visible = true;
+                }
+
+            }));
+        }
+
 
         /// <summary>
         /// 신호인식 - 매도
@@ -754,6 +811,10 @@ namespace TraderTestV2
         
         private void 매도진입()
         {
+            진입중 = true;
+            //진입중Timer.Start();
+            lbl_진입중.Visible = true;
+
             매도_Click(null, null);
             
             //this.btn_매도.PerformClick();
@@ -765,6 +826,10 @@ namespace TraderTestV2
         }
         private void 매도스위칭()
         {
+            진입중 = true;
+            //진입중Timer.Start();
+            lbl_진입중.Visible = true;
+
             btn_매도스위칭_Click(null, null);
             //this.btn_매도스위칭.PerformClick();
             //if (selectedItem != null)
@@ -775,6 +840,10 @@ namespace TraderTestV2
         }
         private void 일괄청산()
         {
+            진입중 = true;
+            //진입중Timer.Start();
+            lbl_진입중.Visible = true;
+
             청산_Click(null, null);
             //this.btn_청산.PerformClick();
             //if (selectedItem != null)
@@ -785,6 +854,10 @@ namespace TraderTestV2
         }
         private void 매수스위칭()
         {
+            진입중 = true;
+            //진입중Timer.Start();
+            lbl_진입중.Visible = true;
+
             btn_매수스위칭_Click(null, null);
             //this.btn_매수스위칭.PerformClick();
             //if (selectedItem != null)
@@ -795,6 +868,10 @@ namespace TraderTestV2
         }
         private void 매수진입()
         {
+            진입중 = true;
+            //진입중Timer.Start();
+            lbl_진입중.Visible = true;
+
             매수_Click(null, null);
             //this.btn_매수.PerformClick();
             //if (selectedItem != null)
@@ -879,6 +956,14 @@ namespace TraderTestV2
                     this.colorLb = lbl_매도청산컬러;
                     this.signalLb = lbl_매도청산신호;
                     break;
+                case 컬러설정.COI매수:
+                    this.colorLb = lbl_COI매수컬러;
+                    this.signalLb = lbl_COI매수신호;
+                    break;
+                case 컬러설정.COI매도:
+                    this.colorLb = lbl_COI매도컬러;
+                    this.signalLb = lbl_COI매도신호;
+                    break;
             }
 
             colorTm = new Timer();
@@ -920,7 +1005,7 @@ namespace TraderTestV2
 
         private void btn_일괄취소_Click(object sender, EventArgs e)
         {
-            진입중Timer.Stop();
+            //진입중Timer.Stop();
 
             selectedItem = comboBox1.SelectedItem as ApplicationInfo;
             if (selectedItem != null)
@@ -953,7 +1038,15 @@ namespace TraderTestV2
             valueSetting.RecogMode = 인식모드.신호인식;
         }
 
-       
+        private void btn_COI매수설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.COI매수);
+        }
+
+        private void btn_COI매도설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.COI매도);
+        }
 
         private void ColorTm_Tick(object sender, EventArgs e)
         {
