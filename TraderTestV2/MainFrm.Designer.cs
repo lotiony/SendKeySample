@@ -74,6 +74,16 @@
             this.btn_매도청산설정 = new System.Windows.Forms.Button();
             this.lbl_매수청산신호 = new System.Windows.Forms.Label();
             this.grp_몸통인식설정 = new System.Windows.Forms.GroupBox();
+            this.lbl_COI매도발생 = new System.Windows.Forms.Label();
+            this.lbl_COI매도컬러 = new System.Windows.Forms.Label();
+            this.lbl_COI매수컬러 = new System.Windows.Forms.Label();
+            this.lbl_COI매도신호 = new System.Windows.Forms.Label();
+            this.lbl_COI매수신호 = new System.Windows.Forms.Label();
+            this.btn_COI매도설정 = new System.Windows.Forms.Button();
+            this.btn_COI매수설정 = new System.Windows.Forms.Button();
+            this.lbl_COI매수발생 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.lbl_음봉발생 = new System.Windows.Forms.Label();
             this.lbl_음봉컬러 = new System.Windows.Forms.Label();
             this.lbl_양봉컬러 = new System.Windows.Forms.Label();
@@ -130,16 +140,8 @@
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.lbl_COI매도발생 = new System.Windows.Forms.Label();
-            this.lbl_COI매도컬러 = new System.Windows.Forms.Label();
-            this.lbl_COI매수컬러 = new System.Windows.Forms.Label();
-            this.lbl_COI매도신호 = new System.Windows.Forms.Label();
-            this.lbl_COI매수신호 = new System.Windows.Forms.Label();
-            this.btn_COI매도설정 = new System.Windows.Forms.Button();
-            this.btn_COI매수설정 = new System.Windows.Forms.Button();
-            this.lbl_COI매수발생 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
+            this.chk_자동매도 = new System.Windows.Forms.CheckBox();
+            this.chk_자동매수 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -658,6 +660,100 @@
             this.grp_몸통인식설정.Size = new System.Drawing.Size(411, 168);
             this.grp_몸통인식설정.TabIndex = 72;
             this.grp_몸통인식설정.TabStop = false;
+            // 
+            // lbl_COI매도발생
+            // 
+            this.lbl_COI매도발생.BackColor = System.Drawing.Color.Lime;
+            this.lbl_COI매도발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_COI매도발생.Location = new System.Drawing.Point(350, 139);
+            this.lbl_COI매도발생.Name = "lbl_COI매도발생";
+            this.lbl_COI매도발생.Size = new System.Drawing.Size(49, 19);
+            this.lbl_COI매도발생.TabIndex = 74;
+            this.lbl_COI매도발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_COI매도발생.Visible = false;
+            // 
+            // lbl_COI매도컬러
+            // 
+            this.lbl_COI매도컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매도컬러.Location = new System.Drawing.Point(125, 139);
+            this.lbl_COI매도컬러.Name = "lbl_COI매도컬러";
+            this.lbl_COI매도컬러.Size = new System.Drawing.Size(20, 18);
+            this.lbl_COI매도컬러.TabIndex = 73;
+            // 
+            // lbl_COI매수컬러
+            // 
+            this.lbl_COI매수컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매수컬러.Location = new System.Drawing.Point(125, 107);
+            this.lbl_COI매수컬러.Name = "lbl_COI매수컬러";
+            this.lbl_COI매수컬러.Size = new System.Drawing.Size(20, 18);
+            this.lbl_COI매수컬러.TabIndex = 72;
+            // 
+            // lbl_COI매도신호
+            // 
+            this.lbl_COI매도신호.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매도신호.Location = new System.Drawing.Point(146, 139);
+            this.lbl_COI매도신호.Name = "lbl_COI매도신호";
+            this.lbl_COI매도신호.Size = new System.Drawing.Size(158, 18);
+            this.lbl_COI매도신호.TabIndex = 71;
+            this.lbl_COI매도신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_COI매수신호
+            // 
+            this.lbl_COI매수신호.BackColor = System.Drawing.Color.White;
+            this.lbl_COI매수신호.Location = new System.Drawing.Point(146, 107);
+            this.lbl_COI매수신호.Name = "lbl_COI매수신호";
+            this.lbl_COI매수신호.Size = new System.Drawing.Size(158, 18);
+            this.lbl_COI매수신호.TabIndex = 70;
+            this.lbl_COI매수신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btn_COI매도설정
+            // 
+            this.btn_COI매도설정.Location = new System.Drawing.Point(310, 136);
+            this.btn_COI매도설정.Name = "btn_COI매도설정";
+            this.btn_COI매도설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_COI매도설정.TabIndex = 69;
+            this.btn_COI매도설정.Text = "설정";
+            this.btn_COI매도설정.UseVisualStyleBackColor = true;
+            this.btn_COI매도설정.Click += new System.EventHandler(this.btn_COI매도설정_Click);
+            // 
+            // btn_COI매수설정
+            // 
+            this.btn_COI매수설정.Location = new System.Drawing.Point(310, 105);
+            this.btn_COI매수설정.Name = "btn_COI매수설정";
+            this.btn_COI매수설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_COI매수설정.TabIndex = 68;
+            this.btn_COI매수설정.Text = "설정";
+            this.btn_COI매수설정.UseVisualStyleBackColor = true;
+            this.btn_COI매수설정.Click += new System.EventHandler(this.btn_COI매수설정_Click);
+            // 
+            // lbl_COI매수발생
+            // 
+            this.lbl_COI매수발생.BackColor = System.Drawing.Color.Lime;
+            this.lbl_COI매수발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_COI매수발생.Location = new System.Drawing.Point(350, 107);
+            this.lbl_COI매수발생.Name = "lbl_COI매수발생";
+            this.lbl_COI매수발생.Size = new System.Drawing.Size(49, 19);
+            this.lbl_COI매수발생.TabIndex = 65;
+            this.lbl_COI매수발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_COI매수발생.Visible = false;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 110);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(102, 12);
+            this.label33.TabIndex = 66;
+            this.label33.Text = "COI매수 컬러설정";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(6, 138);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(102, 12);
+            this.label34.TabIndex = 67;
+            this.label34.Text = "COI매도 컬러설정";
             // 
             // lbl_음봉발생
             // 
@@ -1220,105 +1316,39 @@
             this.pictureBox3.TabIndex = 53;
             this.pictureBox3.TabStop = false;
             // 
-            // lbl_COI매도발생
+            // chk_자동매도
             // 
-            this.lbl_COI매도발생.BackColor = System.Drawing.Color.Lime;
-            this.lbl_COI매도발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbl_COI매도발생.Location = new System.Drawing.Point(350, 139);
-            this.lbl_COI매도발생.Name = "lbl_COI매도발생";
-            this.lbl_COI매도발생.Size = new System.Drawing.Size(49, 19);
-            this.lbl_COI매도발생.TabIndex = 74;
-            this.lbl_COI매도발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_COI매도발생.Visible = false;
+            this.chk_자동매도.AutoSize = true;
+            this.chk_자동매도.Checked = true;
+            this.chk_자동매도.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_자동매도.Location = new System.Drawing.Point(402, 442);
+            this.chk_자동매도.Name = "chk_자동매도";
+            this.chk_자동매도.Size = new System.Drawing.Size(96, 16);
+            this.chk_자동매도.TabIndex = 66;
+            this.chk_자동매도.Text = "자동매도진입";
+            this.chk_자동매도.UseVisualStyleBackColor = true;
+            this.chk_자동매도.CheckedChanged += new System.EventHandler(this.chk_자동매도_CheckedChanged);
             // 
-            // lbl_COI매도컬러
+            // chk_자동매수
             // 
-            this.lbl_COI매도컬러.BackColor = System.Drawing.Color.White;
-            this.lbl_COI매도컬러.Location = new System.Drawing.Point(125, 139);
-            this.lbl_COI매도컬러.Name = "lbl_COI매도컬러";
-            this.lbl_COI매도컬러.Size = new System.Drawing.Size(20, 18);
-            this.lbl_COI매도컬러.TabIndex = 73;
-            // 
-            // lbl_COI매수컬러
-            // 
-            this.lbl_COI매수컬러.BackColor = System.Drawing.Color.White;
-            this.lbl_COI매수컬러.Location = new System.Drawing.Point(125, 107);
-            this.lbl_COI매수컬러.Name = "lbl_COI매수컬러";
-            this.lbl_COI매수컬러.Size = new System.Drawing.Size(20, 18);
-            this.lbl_COI매수컬러.TabIndex = 72;
-            // 
-            // lbl_COI매도신호
-            // 
-            this.lbl_COI매도신호.BackColor = System.Drawing.Color.White;
-            this.lbl_COI매도신호.Location = new System.Drawing.Point(146, 139);
-            this.lbl_COI매도신호.Name = "lbl_COI매도신호";
-            this.lbl_COI매도신호.Size = new System.Drawing.Size(158, 18);
-            this.lbl_COI매도신호.TabIndex = 71;
-            this.lbl_COI매도신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_COI매수신호
-            // 
-            this.lbl_COI매수신호.BackColor = System.Drawing.Color.White;
-            this.lbl_COI매수신호.Location = new System.Drawing.Point(146, 107);
-            this.lbl_COI매수신호.Name = "lbl_COI매수신호";
-            this.lbl_COI매수신호.Size = new System.Drawing.Size(158, 18);
-            this.lbl_COI매수신호.TabIndex = 70;
-            this.lbl_COI매수신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btn_COI매도설정
-            // 
-            this.btn_COI매도설정.Location = new System.Drawing.Point(310, 136);
-            this.btn_COI매도설정.Name = "btn_COI매도설정";
-            this.btn_COI매도설정.Size = new System.Drawing.Size(37, 25);
-            this.btn_COI매도설정.TabIndex = 69;
-            this.btn_COI매도설정.Text = "설정";
-            this.btn_COI매도설정.UseVisualStyleBackColor = true;
-            this.btn_COI매도설정.Click += new System.EventHandler(this.btn_COI매도설정_Click);
-            // 
-            // btn_COI매수설정
-            // 
-            this.btn_COI매수설정.Location = new System.Drawing.Point(310, 105);
-            this.btn_COI매수설정.Name = "btn_COI매수설정";
-            this.btn_COI매수설정.Size = new System.Drawing.Size(37, 25);
-            this.btn_COI매수설정.TabIndex = 68;
-            this.btn_COI매수설정.Text = "설정";
-            this.btn_COI매수설정.UseVisualStyleBackColor = true;
-            this.btn_COI매수설정.Click += new System.EventHandler(this.btn_COI매수설정_Click);
-            // 
-            // lbl_COI매수발생
-            // 
-            this.lbl_COI매수발생.BackColor = System.Drawing.Color.Lime;
-            this.lbl_COI매수발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbl_COI매수발생.Location = new System.Drawing.Point(350, 107);
-            this.lbl_COI매수발생.Name = "lbl_COI매수발생";
-            this.lbl_COI매수발생.Size = new System.Drawing.Size(49, 19);
-            this.lbl_COI매수발생.TabIndex = 65;
-            this.lbl_COI매수발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_COI매수발생.Visible = false;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 110);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(102, 12);
-            this.label33.TabIndex = 66;
-            this.label33.Text = "COI매수 컬러설정";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(6, 138);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(102, 12);
-            this.label34.TabIndex = 67;
-            this.label34.Text = "COI매도 컬러설정";
+            this.chk_자동매수.AutoSize = true;
+            this.chk_자동매수.Checked = true;
+            this.chk_자동매수.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_자동매수.Location = new System.Drawing.Point(299, 442);
+            this.chk_자동매수.Name = "chk_자동매수";
+            this.chk_자동매수.Size = new System.Drawing.Size(96, 16);
+            this.chk_자동매수.TabIndex = 65;
+            this.chk_자동매수.Text = "자동매수진입";
+            this.chk_자동매수.UseVisualStyleBackColor = true;
+            this.chk_자동매수.CheckedChanged += new System.EventHandler(this.chk_자동매수_CheckedChanged);
             // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1044, 568);
+            this.Controls.Add(this.chk_자동매도);
+            this.Controls.Add(this.chk_자동매수);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -1341,7 +1371,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(850, 450);
             this.Name = "MainFrm";
-            this.Text = "신호인식자동매매_Test_1.3.0";
+            this.Text = "신호인식자동매매_Test_1.4.2";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1481,6 +1511,8 @@
         private System.Windows.Forms.Label lbl_COI매수발생;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.CheckBox chk_자동매도;
+        private System.Windows.Forms.CheckBox chk_자동매수;
     }
 }
 

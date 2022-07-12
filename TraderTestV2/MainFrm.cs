@@ -343,21 +343,21 @@ namespace TraderTestV2
 
         private void SaveInfo()
         {
-            Properties.Settings.Default.LocX = rect.X;
-            Properties.Settings.Default.LocY = rect.Y;
-            Properties.Settings.Default.AreaW = rect.Width;
-            Properties.Settings.Default.AreaH = rect.Height;
-            Properties.Settings.Default.ColorB = lbl_매수컬러.BackColor;
-            Properties.Settings.Default.ColorS = lbl_매도컬러.BackColor;
-            Properties.Settings.Default.BodySize = (int)nud_몸통크기.Value;
-            Properties.Settings.Default.ColorP = lbl_양봉컬러.BackColor;
-            Properties.Settings.Default.ColorN = lbl_음봉컬러.BackColor;
-            Properties.Settings.Default.ColorBO = lbl_매수청산컬러.BackColor;
-            Properties.Settings.Default.ColorSO = lbl_매도청산컬러.BackColor;
-            Properties.Settings.Default.ColorCOIB = lbl_COI매수컬러.BackColor;
-            Properties.Settings.Default.ColorCOIS = lbl_COI매도컬러.BackColor;
+            //Properties.Settings.Default.LocX = rect.X;
+            //Properties.Settings.Default.LocY = rect.Y;
+            //Properties.Settings.Default.AreaW = rect.Width;
+            //Properties.Settings.Default.AreaH = rect.Height;
+            //Properties.Settings.Default.ColorB = lbl_매수컬러.BackColor;
+            //Properties.Settings.Default.ColorS = lbl_매도컬러.BackColor;
+            //Properties.Settings.Default.BodySize = (int)nud_몸통크기.Value;
+            //Properties.Settings.Default.ColorP = lbl_양봉컬러.BackColor;
+            //Properties.Settings.Default.ColorN = lbl_음봉컬러.BackColor;
+            //Properties.Settings.Default.ColorBO = lbl_매수청산컬러.BackColor;
+            //Properties.Settings.Default.ColorSO = lbl_매도청산컬러.BackColor;
+            //Properties.Settings.Default.ColorCOIB = lbl_COI매수컬러.BackColor;
+            //Properties.Settings.Default.ColorCOIS = lbl_COI매도컬러.BackColor;
 
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
 
             valueSetting.RecogArea = new Rectangle(rect.Location, rect.Size);
             valueSetting.BodySize = (int)nud_몸통크기.Value;
@@ -369,81 +369,129 @@ namespace TraderTestV2
             valueSetting.SellOut = lbl_매도청산컬러.BackColor;
             valueSetting.COIBuy = lbl_COI매수컬러.BackColor;
             valueSetting.COISell = lbl_COI매도컬러.BackColor;
+
+            Common.SaveSetting(valueSetting);
         }
 
         private void LoadInfo()
         {
-            if (Properties.Settings.Default.LocX != 0 && Properties.Settings.Default.AreaW > 0)
+            valueSetting = Common.LoadSetting();
+
+            if (valueSetting.RecogArea.Location.X != 0 && valueSetting.RecogArea.Width > 0)
             {
-                rect = new Rectangle(
-                        Properties.Settings.Default.LocX,
-                        Properties.Settings.Default.LocY,
-                        Properties.Settings.Default.AreaW,
-                        Properties.Settings.Default.AreaH
-                    );
+                rect = new Rectangle(valueSetting.RecogArea.Location, valueSetting.RecogArea.Size);
 
                 lbl_영역좌표.Text = $"({rect.X},{rect.Y}) ~ ({rect.Right},{rect.Bottom})";
                 lbl_영역크기.Text = $"X = {rect.Width} Y = {rect.Height}";
                 PreviewPicture();
             }
 
-            if (Properties.Settings.Default.ColorB != Color.FromArgb(0,0,0,0))
-            {
-                Color c = Properties.Settings.Default.ColorB;
-                lbl_매수컬러.BackColor = c;
-                lbl_매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
+            Color c = valueSetting.Buy;
+            lbl_매수컬러.BackColor = c;
+            lbl_매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
 
-            if (Properties.Settings.Default.ColorS != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorS;
-                lbl_매도컬러.BackColor = c;
-                lbl_매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
+            c = valueSetting.Sell;
+            lbl_매도컬러.BackColor = c;
+            lbl_매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
 
-            if (Properties.Settings.Default.ColorBO != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorBO;
-                lbl_매수청산컬러.BackColor = c;
-                lbl_매수청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
+            c = valueSetting.BuyOut;
+            lbl_매수청산컬러.BackColor = c;
+            lbl_매수청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
 
-            if (Properties.Settings.Default.ColorSO != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorSO;
-                lbl_매도청산컬러.BackColor = c;
-                lbl_매도청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
+            c = valueSetting.SellOut;
+            lbl_매도청산컬러.BackColor = c;
+            lbl_매도청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
 
-            if (Properties.Settings.Default.ColorP != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorP;
-                lbl_양봉컬러.BackColor = c;
-                lbl_양봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
-            if (Properties.Settings.Default.ColorN != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorN;
-                lbl_음봉컬러.BackColor = c;
-                lbl_음봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
-            if (Properties.Settings.Default.ColorCOIB != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorCOIB;
-                lbl_COI매수컬러.BackColor = c;
-                lbl_COI매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
-            if (Properties.Settings.Default.ColorCOIS != Color.FromArgb(0, 0, 0, 0))
-            {
-                Color c = Properties.Settings.Default.ColorCOIS;
-                lbl_COI매도컬러.BackColor = c;
-                lbl_COI매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
-            }
+            c = valueSetting.Body_P;
+            lbl_양봉컬러.BackColor = c;
+            lbl_양봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
 
-            if (Properties.Settings.Default.BodySize != 0)
-            {
-                nud_몸통크기.Value = Properties.Settings.Default.BodySize;
-            }
+            c = valueSetting.Body_N;
+            lbl_음봉컬러.BackColor = c;
+            lbl_음봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+
+            c = valueSetting.COIBuy;
+            lbl_COI매수컬러.BackColor = c;
+            lbl_COI매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+
+            c = valueSetting.COISell;
+            lbl_COI매도컬러.BackColor = c;
+            lbl_COI매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+
+            nud_몸통크기.Value = valueSetting.BodySize;
+
+            rb_몸통인식.Checked = (valueSetting.RecogMode == 인식모드.몸통인식 ? true : false);
+            //if (Properties.Settings.Default.LocX != 0 && Properties.Settings.Default.AreaW > 0)
+            //{
+            //    rect = new Rectangle(
+            //            Properties.Settings.Default.LocX,
+            //            Properties.Settings.Default.LocY,
+            //            Properties.Settings.Default.AreaW,
+            //            Properties.Settings.Default.AreaH
+            //        );
+
+            //    lbl_영역좌표.Text = $"({rect.X},{rect.Y}) ~ ({rect.Right},{rect.Bottom})";
+            //    lbl_영역크기.Text = $"X = {rect.Width} Y = {rect.Height}";
+            //    PreviewPicture();
+            //}
+
+            //if (Properties.Settings.Default.ColorB != Color.FromArgb(0,0,0,0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorB;
+            //    lbl_매수컬러.BackColor = c;
+            //    lbl_매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+
+            //if (Properties.Settings.Default.ColorS != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorS;
+            //    lbl_매도컬러.BackColor = c;
+            //    lbl_매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+
+            //if (Properties.Settings.Default.ColorBO != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorBO;
+            //    lbl_매수청산컬러.BackColor = c;
+            //    lbl_매수청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+
+            //if (Properties.Settings.Default.ColorSO != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorSO;
+            //    lbl_매도청산컬러.BackColor = c;
+            //    lbl_매도청산신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+
+            //if (Properties.Settings.Default.ColorP != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorP;
+            //    lbl_양봉컬러.BackColor = c;
+            //    lbl_양봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+            //if (Properties.Settings.Default.ColorN != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorN;
+            //    lbl_음봉컬러.BackColor = c;
+            //    lbl_음봉신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+            //if (Properties.Settings.Default.ColorCOIB != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorCOIB;
+            //    lbl_COI매수컬러.BackColor = c;
+            //    lbl_COI매수신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+            //if (Properties.Settings.Default.ColorCOIS != Color.FromArgb(0, 0, 0, 0))
+            //{
+            //    Color c = Properties.Settings.Default.ColorCOIS;
+            //    lbl_COI매도컬러.BackColor = c;
+            //    lbl_COI매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+            //}
+
+            //if (Properties.Settings.Default.BodySize != 0)
+            //{
+            //    nud_몸통크기.Value = Properties.Settings.Default.BodySize;
+            //}
 
             기준계약수 = (int)numericUpDown1.Value;
             진입중 = false;
@@ -621,27 +669,37 @@ namespace TraderTestV2
 
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                        switch (_status.PosType)
+                        if (자동매도)
                         {
-                            case CType.매수:
-                                // 매수 포지션을 들고 있을때 음봉이 떴다면 
-                                if (cr?.IsCoiSell ?? false)  // COI 매도로 0선 아래에 내려온경우 매도로 바로 스위칭
-                                    매도스위칭();
-                                else if (cr?.IsCoiBuy ?? false)    // COI 매수로 0선 위에 있다면 그냥 청산만
-                                    일괄청산();
-                                
-                                break;
-                            case CType.매도:
-                                // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
-                                break;
-                            case CType.없음:
-                                // 무포인데 음봉이 떳다면
-                                if (cr?.IsCoiSell ?? false) // COI 매도로 0선 아래에 내려온경우 매도 진입
-                                    매도진입();
+                            // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                            switch (_status.PosType)
+                            {
+                                case CType.매수:
+                                    // 매수 포지션을 들고 있을때 음봉이 떴다면 
+                                    if (cr?.IsCoiSell ?? false)  // COI 매도로 0선 아래에 내려온경우 매도로 바로 스위칭
+                                        매도스위칭();
+                                    else if (cr?.IsCoiBuy ?? false)    // COI 매수로 0선 위에 있다면 그냥 청산만
+                                        일괄청산();
 
-                                break;
+                                    break;
+                                case CType.매도:
+                                    // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
+                                    break;
+                                case CType.없음:
+                                    // 무포인데 음봉이 떳다면
+                                    if (cr?.IsCoiSell ?? false) // COI 매도로 0선 아래에 내려온경우 매도 진입
+                                        매도진입();
+
+                                    break;
+                            }
+
                         }
+                        else
+                        {
+                            // chk_자동매도 = false인 경우 신규진입은 하지 않지만, 만약 진입중인 매수포지션이 있다면 청산한다.
+                            if (_status.PosType == CType.매수 && _status.Contracts > 0) 일괄청산();
+                        }
+
                     }
 
 
@@ -664,27 +722,36 @@ namespace TraderTestV2
                     lbl_양봉발생.Visible = true;
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                        switch (_status.PosType)
+                        if (자동매수)
                         {
-                            case CType.매수:
-                                // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
-                                break;
-                            case CType.매도:
-                                // 매도 포지션을 들고 있을때 양봉이 떴다면 
-                                if (cr?.IsCoiBuy ?? false)  // COI 매수로 0선 위에 올라온경우 매수로 바로 스위칭
-                                    매수스위칭(); 
-                                else if (cr?.IsCoiSell ?? false)    // COI 매도로 0선 아래에 있다면  그냥 청산만 
-                                    일괄청산();
+                            // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                            switch (_status.PosType)
+                            {
+                                case CType.매수:
+                                    // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
+                                    break;
+                                case CType.매도:
+                                    // 매도 포지션을 들고 있을때 양봉이 떴다면 
+                                    if (cr?.IsCoiBuy ?? false)  // COI 매수로 0선 위에 올라온경우 매수로 바로 스위칭
+                                        매수스위칭();
+                                    else if (cr?.IsCoiSell ?? false)    // COI 매도로 0선 아래에 있다면  그냥 청산만 
+                                        일괄청산();
 
-                                break;
-                            case CType.없음:
-                                // 무포인데 양봉이 떳다면
-                                if (cr?.IsCoiBuy ?? false) // COI 매수로 0선 위에 올라온경우 매수 진입
-                                    매수진입();  
+                                    break;
+                                case CType.없음:
+                                    // 무포인데 양봉이 떳다면
+                                    if (cr?.IsCoiBuy ?? false) // COI 매수로 0선 위에 올라온경우 매수 진입
+                                        매수진입();
 
-                                break;
+                                    break;
+                            }
                         }
+                        else
+                        {
+                            // chk_자동매수 = false인 경우 신규진입은 하지 않지만, 만약 진입중인 매도포지션이 있다면 청산한다.
+                            if (_status.PosType == CType.매도 && _status.Contracts > 0) 일괄청산();
+                        }
+
                     }
                 }
 
@@ -738,19 +805,28 @@ namespace TraderTestV2
                     lbl_매도신호발생.Visible = true;
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                        switch (_status.PosType)
+                        if (자동매도)   // chk_자동매도 = true 인 경우에만 진행
                         {
-                            case CType.매수:
-                                매도스위칭();
-                                break;
-                            case CType.매도:
-                                // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
-                                break;
-                            case CType.없음:
-                                매도진입();
-                                break;
+                            // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                            switch (_status.PosType)
+                            {
+                                case CType.매수:
+                                    매도스위칭();
+                                    break;
+                                case CType.매도:
+                                    // 매도 포지션 들고 있을때 또 매도가 들어오면 아무것도 하지 않음
+                                    break;
+                                case CType.없음:
+                                    매도진입();
+                                    break;
+                            }
                         }
+                        else
+                        {
+                            // chk_자동매도 = false인 경우 신규진입은 하지 않지만, 만약 진입중인 매수포지션이 있다면 청산한다.
+                            if (_status.PosType == CType.매수 && _status.Contracts > 0) 일괄청산();
+                        }
+
                     }
 
                 }
@@ -772,18 +848,26 @@ namespace TraderTestV2
                     lbl_매수신호발생.Visible = true;
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                        switch (_status.PosType)
+                        if (자동매수)   // chk_자동매수 = true 인 경우에만 진행
                         {
-                            case CType.매수:
-                                // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
-                                break;
-                            case CType.매도:
-                                매수스위칭();
-                                break;
-                            case CType.없음:
-                                매수진입();
-                                break;
+                            // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                            switch (_status.PosType)
+                            {
+                                case CType.매수:
+                                    // 매수 포지션 들고 있을때 또 매수가 들어오면 아무것도 하지 않음
+                                    break;
+                                case CType.매도:
+                                    매수스위칭();
+                                    break;
+                                case CType.없음:
+                                    매수진입();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            // chk_자동매수 = false인 경우 신규진입은 하지 않지만, 만약 진입중인 매도포지션이 있다면 청산한다.
+                            if (_status.PosType == CType.매도 && _status.Contracts > 0) 일괄청산();
                         }
                     }
                 }
@@ -798,12 +882,14 @@ namespace TraderTestV2
             {
                 btn_자동주문.Text = "작동중지";
                 자동실행중 = true;
+                자동매수 = chk_자동매수.Checked;
                 //nud_몸통크기.Enabled = true;
             }
             else
             {
                 btn_자동주문.Text = "작동시작";
                 자동실행중 = false;
+                자동매도 = chk_자동매도.Checked;
                 //nud_몸통크기.Enabled = false;
             }
         }
@@ -886,12 +972,26 @@ namespace TraderTestV2
 
         private void Cr_UpdateEvent()
         {
-            this.Invoke(new MethodInvoker(delegate () { pictureBox1.Image = cr?.CaptureBitmap ?? null; }));
+            try
+            {
+                this.Invoke(new MethodInvoker(delegate () { pictureBox1.Image = cr?.CaptureBitmap ?? null; }));
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private void CrSub_UpdateEvent()
         {
-            this.Invoke(new MethodInvoker(delegate () { pictureBox2.Image = crSub?.CaptureBitmap ?? null; }));
+            try
+            {
+                this.Invoke(new MethodInvoker(delegate () { pictureBox2.Image = crSub?.CaptureBitmap ?? null; }));
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
 
@@ -1046,6 +1146,16 @@ namespace TraderTestV2
         private void btn_COI매도설정_Click(object sender, EventArgs e)
         {
             SetColor(컬러설정.COI매도);
+        }
+
+        private void chk_자동매수_CheckedChanged(object sender, EventArgs e)
+        {
+            this.자동매수 = chk_자동매수.Checked;
+        }
+
+        private void chk_자동매도_CheckedChanged(object sender, EventArgs e)
+        {
+            this.자동매도 = chk_자동매도.Checked;
         }
 
         private void ColorTm_Tick(object sender, EventArgs e)
