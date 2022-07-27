@@ -183,6 +183,15 @@ namespace TraderTestV2
                             return phw.ToInt64();
                         }
                         break;
+
+                    case HtsControls.수치조회창:
+                        if (windowInfo == "#32770수치조회창 - 실시간" && NativeWin32.IsWindowVisible(handle))
+                        {
+                            IntPtr phw = handle;
+                            phw = NativeWin32.GetWindow(phw, NativeWin32.GW_CHILD);
+                            return phw.ToInt64();
+                        }
+                        break;
                 }
 
             }

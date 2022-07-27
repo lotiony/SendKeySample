@@ -20,7 +20,7 @@ namespace TraderTestV2
         public bool IsCoiBuy { get { return this._isCoiBuySignaled; } }
         public bool IsCoiSell { get { return this._isCoiSellSignaled; } }
 
-        public bool IsSignaled { get { return (_isBuySignaled || _isSellSignaled || _isBodyPSignaled || _isBodyNSignaled || _isBuyOutSignaled || _isSellOutSignaled); } }
+        public bool IsSignaled { get { return (_isBuySignaled || _isSellSignaled || _isBodyPSignaled || _isBodyNSignaled || _isBuyOutSignaled || _isSellOutSignaled || _isHBoSignaled); } }
         private bool _isBuySignaled = false;
         private bool _isSellSignaled = false;
         private bool _isBodyPSignaled = false;
@@ -29,6 +29,7 @@ namespace TraderTestV2
         private bool _isSellOutSignaled = false;
         private bool _isCoiBuySignaled = false;
         private bool _isCoiSellSignaled = false;
+        private bool _isHBoSignaled = false;
 
 
         private Timer timer;
@@ -49,6 +50,7 @@ namespace TraderTestV2
         public event deleSignal SellOut;
         public event deleSignal CoiBuy;
         public event deleSignal CoiSell;
+        public event deleSignal HBO;
         public event deleClear Clear;
 
         public ChartRecognition(Setting valSet, double interval, byte fromCr)
@@ -144,6 +146,7 @@ namespace TraderTestV2
                 int _count6 = 0;
                 int _count7 = 0;
                 int _count8 = 0;
+                int _count9 = 0;
                 _isBuySignaled = false;
                 _isSellSignaled = false;
                 _isBodyPSignaled = false;
@@ -152,6 +155,7 @@ namespace TraderTestV2
                 _isSellOutSignaled = false;
                 _isCoiBuySignaled = false;
                 _isCoiSellSignaled = false;
+                _isHBoSignaled = false;
 
 
                 using (Bitmap newBmp = bmp.Clone(new Rectangle(center, 0, 1, bmp.Height), bmp.PixelFormat))
@@ -173,6 +177,9 @@ namespace TraderTestV2
                                 byte b = p[0];
                                 byte g = p[1];
                                 byte r = p[2];
+
+
+                                if ((Set.HBo.R == r) && (Set.HBo.G == g) && (Set.HBo.B == b)) _count9 += 1;
 
                                 switch (Set.RecogMode)
                                 {
@@ -199,25 +206,37 @@ namespace TraderTestV2
                     }
                 }
 
-                switch (Set.RecogMode)
+                /// 횡보신호 사용 체크시 신호는 무시하고 들고 있던 포지션은 무조건 청산
+                if (Set.UseHBo && _count9 > this.MinRecogSize && FromCr == 1)
                 {
-                    /// 몸통인식일 땐 메인 영역만 체크한다.
-                    case 인식모드.몸통인식:
-                        /// 몸통인식일때 COI 신호를 보고 진입신호를 구분한다.
-                        if (_count7 > this.MinRecogSize && FromCr == 1) { this._isCoiBuySignaled = true; } else { this._isCoiBuySignaled = false; }
-                        if (_count8 > this.MinRecogSize && FromCr == 1) { this._isCoiSellSignaled = true; } else { this._isCoiSellSignaled = false; }
-
-                        if (_count1 > this.Set.BodySize && FromCr == 1) { this._isBodyPSignaled = true; this.BodyP(this.FromCr); } else { this._isBodyPSignaled = false; }
-                        if (_count2 > this.Set.BodySize && FromCr == 1) { this._isBodyNSignaled = true; this.BodyN(this.FromCr); } else { this._isBodyNSignaled = false; }
-                        break;
-
-                    case 인식모드.신호인식:
-                        if (_count3 > this.MinRecogSize) { this._isBuySignaled = true; this.Buy(this.FromCr); return; } else { this._isBuySignaled = false; }
-                        if (_count4 > this.MinRecogSize) { this._isSellSignaled = true; this.Sell(this.FromCr); return; } else { this._isSellSignaled = false; }
-                        if (_count5 > this.MinRecogSize) { this._isBuyOutSignaled = true; this.BuyOut(this.FromCr); } else { this._isBuyOutSignaled = false; }
-                        if (_count6 > this.MinRecogSize) { this._isSellOutSignaled = true; this.SellOut(this.FromCr); } else { this._isSellOutSignaled = false; }
-                        break;
+                    this._isHBoSignaled = true; 
+                    this.HBO(this.FromCr);
                 }
+                else
+                {
+                    switch (Set.RecogMode)
+                    {
+                        /// 몸통인식일 땐 메인 영역만 체크한다.
+                        case 인식모드.몸통인식:
+                            /// 몸통인식일때 COI 신호를 보고 진입신호를 구분한다.
+                            if (_count7 > this.MinRecogSize && FromCr == 1) { this._isCoiBuySignaled = true; } else { this._isCoiBuySignaled = false; }
+                            if (_count8 > this.MinRecogSize && FromCr == 1) { this._isCoiSellSignaled = true; } else { this._isCoiSellSignaled = false; }
+
+                            if (_count1 > this.Set.BodySize && FromCr == 1) { this._isBodyPSignaled = true; this.BodyP(this.FromCr); } else { this._isBodyPSignaled = false; }
+                            if (_count2 > this.Set.BodySize && FromCr == 1) { this._isBodyNSignaled = true; this.BodyN(this.FromCr); } else { this._isBodyNSignaled = false; }
+                            break;
+
+                        case 인식모드.신호인식:
+                            if (_count3 > this.MinRecogSize) { this._isBuySignaled = true; this.Buy(this.FromCr); return; } else { this._isBuySignaled = false; }
+                            if (_count4 > this.MinRecogSize) { this._isSellSignaled = true; this.Sell(this.FromCr); return; } else { this._isSellSignaled = false; }
+                            if (_count5 > this.MinRecogSize) { this._isBuyOutSignaled = true; this.BuyOut(this.FromCr); } else { this._isBuyOutSignaled = false; }
+                            if (_count6 > this.MinRecogSize) { this._isSellOutSignaled = true; this.SellOut(this.FromCr); } else { this._isSellOutSignaled = false; }
+                            break;
+                    }
+
+
+                }
+
 
 
                 //if (_buyCount > MinRecogSize) { this._isBuySignaled = true; this.Buy(this.FromCr); } else { this._isBuySignaled = false; }

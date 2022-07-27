@@ -27,5 +27,6 @@ namespace TraderTestV2
         LBL_CONT = 3,
         LBL_PRICE = 4,
         LBL_PGSI = 5,
+        수치조회창 = 6,
     }
 }

@@ -52,6 +52,12 @@
             this.btn_청산 = new System.Windows.Forms.Button();
             this.btn_매도 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.chk_횡보신호사용 = new System.Windows.Forms.CheckBox();
+            this.lbl_횡보신호발생 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lbl_횡보신호컬러 = new System.Windows.Forms.Label();
+            this.btn_횡보설정 = new System.Windows.Forms.Button();
+            this.lbl_횡보신호 = new System.Windows.Forms.Label();
             this.grp_신호인식설정 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -116,32 +122,30 @@
             this.dtp_종료시간 = new System.Windows.Forms.DateTimePicker();
             this.dtp_시작시간 = new System.Windows.Forms.DateTimePicker();
             this.btn_자동주문 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.chk_자동매도 = new System.Windows.Forms.CheckBox();
             this.chk_자동매수 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.lbl_종가 = new System.Windows.Forms.Label();
+            this.lbl_하늘색 = new System.Windows.Forms.Label();
+            this.lbl_회색 = new System.Windows.Forms.Label();
+            this.chk_숫자인식 = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.nud_감소폭 = new System.Windows.Forms.NumericUpDown();
+            this.chk_최소익절 = new System.Windows.Forms.CheckBox();
+            this.nud_최소익절 = new System.Windows.Forms.NumericUpDown();
+            this.chk_자동익절 = new System.Windows.Forms.CheckBox();
+            this.chk_자동손절 = new System.Windows.Forms.CheckBox();
+            this.nud_익절 = new System.Windows.Forms.NumericUpDown();
+            this.nud_손절 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.lbl_인식봉 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -152,10 +156,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_몸통크기)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_감소폭)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_최소익절)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_익절)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_손절)).BeginInit();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -397,6 +408,12 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.chk_횡보신호사용);
+            this.groupBox4.Controls.Add(this.lbl_횡보신호발생);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.lbl_횡보신호컬러);
+            this.groupBox4.Controls.Add(this.btn_횡보설정);
+            this.groupBox4.Controls.Add(this.lbl_횡보신호);
             this.groupBox4.Controls.Add(this.grp_신호인식설정);
             this.groupBox4.Controls.Add(this.grp_몸통인식설정);
             this.groupBox4.Controls.Add(this.label43);
@@ -409,10 +426,70 @@
             this.groupBox4.Controls.Add(this.btn_인식영역선택);
             this.groupBox4.Location = new System.Drawing.Point(511, 14);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(428, 456);
+            this.groupBox4.Size = new System.Drawing.Size(428, 510);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "메인차트인식영역";
+            // 
+            // chk_횡보신호사용
+            // 
+            this.chk_횡보신호사용.AutoSize = true;
+            this.chk_횡보신호사용.Checked = true;
+            this.chk_횡보신호사용.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_횡보신호사용.Location = new System.Drawing.Point(133, 488);
+            this.chk_횡보신호사용.Name = "chk_횡보신호사용";
+            this.chk_횡보신호사용.Size = new System.Drawing.Size(100, 16);
+            this.chk_횡보신호사용.TabIndex = 83;
+            this.chk_횡보신호사용.Text = "횡보신호 사용";
+            this.chk_횡보신호사용.UseVisualStyleBackColor = true;
+            this.chk_횡보신호사용.CheckedChanged += new System.EventHandler(this.chk_횡보신호사용_CheckedChanged);
+            // 
+            // lbl_횡보신호발생
+            // 
+            this.lbl_횡보신호발생.BackColor = System.Drawing.Color.DimGray;
+            this.lbl_횡보신호발생.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_횡보신호발생.Location = new System.Drawing.Point(359, 465);
+            this.lbl_횡보신호발생.Name = "lbl_횡보신호발생";
+            this.lbl_횡보신호발생.Size = new System.Drawing.Size(49, 19);
+            this.lbl_횡보신호발생.TabIndex = 82;
+            this.lbl_횡보신호발생.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_횡보신호발생.Visible = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(14, 461);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(105, 36);
+            this.label9.TabIndex = 74;
+            this.label9.Text = "횡보신호 컬러설정\r\n(진입신호무시 \r\n및 즉시청산)";
+            // 
+            // lbl_횡보신호컬러
+            // 
+            this.lbl_횡보신호컬러.BackColor = System.Drawing.Color.White;
+            this.lbl_횡보신호컬러.Location = new System.Drawing.Point(134, 463);
+            this.lbl_횡보신호컬러.Name = "lbl_횡보신호컬러";
+            this.lbl_횡보신호컬러.Size = new System.Drawing.Size(20, 18);
+            this.lbl_횡보신호컬러.TabIndex = 80;
+            // 
+            // btn_횡보설정
+            // 
+            this.btn_횡보설정.Location = new System.Drawing.Point(319, 461);
+            this.btn_횡보설정.Name = "btn_횡보설정";
+            this.btn_횡보설정.Size = new System.Drawing.Size(37, 25);
+            this.btn_횡보설정.TabIndex = 76;
+            this.btn_횡보설정.Text = "설정";
+            this.btn_횡보설정.UseVisualStyleBackColor = true;
+            this.btn_횡보설정.Click += new System.EventHandler(this.btn_횡보설정_Click);
+            // 
+            // lbl_횡보신호
+            // 
+            this.lbl_횡보신호.BackColor = System.Drawing.Color.White;
+            this.lbl_횡보신호.Location = new System.Drawing.Point(155, 463);
+            this.lbl_횡보신호.Name = "lbl_횡보신호";
+            this.lbl_횡보신호.Size = new System.Drawing.Size(158, 18);
+            this.lbl_횡보신호.TabIndex = 78;
+            this.lbl_횡보신호.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // grp_신호인식설정
             // 
@@ -973,11 +1050,12 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 44;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
             // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(985, 18);
+            this.pictureBox1.Location = new System.Drawing.Point(954, 18);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(41, 335);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1072,250 +1150,6 @@
             this.btn_자동주문.UseVisualStyleBackColor = true;
             this.btn_자동주문.Click += new System.EventHandler(this.btn_자동주문_Click);
             // 
-            // label9
-            // 
-            this.label9.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label9.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label9.Location = new System.Drawing.Point(99, 148);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(228, 44);
-            this.label9.TabIndex = 63;
-            this.label9.Text = "진입제어(횡보) 인식중";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label9.Visible = false;
-            // 
-            // label13
-            // 
-            this.label13.BackColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(105, 121);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(20, 18);
-            this.label13.TabIndex = 61;
-            // 
-            // label15
-            // 
-            this.label15.BackColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(126, 121);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(158, 18);
-            this.label15.TabIndex = 58;
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(290, 119);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(37, 25);
-            this.button2.TabIndex = 56;
-            this.button2.Text = "설정";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(105, 104);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(77, 12);
-            this.label17.TabIndex = 54;
-            this.label17.Text = "신호컬러인식";
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox4.Location = new System.Drawing.Point(21, 101);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(41, 91);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 53;
-            this.pictureBox4.TabStop = false;
-            // 
-            // label18
-            // 
-            this.label18.BackColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(176, 73);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(159, 20);
-            this.label18.TabIndex = 52;
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(173, 61);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(53, 12);
-            this.label19.TabIndex = 51;
-            this.label19.Text = "영역좌표";
-            // 
-            // label20
-            // 
-            this.label20.BackColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(9, 73);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(159, 20);
-            this.label20.TabIndex = 50;
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(9, 61);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(53, 12);
-            this.label21.TabIndex = 49;
-            this.label21.Text = "영역크기";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(9, 21);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(329, 27);
-            this.button3.TabIndex = 48;
-            this.button3.Text = "인식영역 선택";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label9);
-            this.groupBox5.Controls.Add(this.button3);
-            this.groupBox5.Controls.Add(this.label13);
-            this.groupBox5.Controls.Add(this.label21);
-            this.groupBox5.Controls.Add(this.label15);
-            this.groupBox5.Controls.Add(this.label20);
-            this.groupBox5.Controls.Add(this.button2);
-            this.groupBox5.Controls.Add(this.label19);
-            this.groupBox5.Controls.Add(this.label17);
-            this.groupBox5.Controls.Add(this.label18);
-            this.groupBox5.Controls.Add(this.pictureBox4);
-            this.groupBox5.Location = new System.Drawing.Point(1140, 18);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(341, 203);
-            this.groupBox5.TabIndex = 45;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "횡보신호 영역설정 (매수매도 진입 제한)";
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.label4);
-            this.groupBox6.Controls.Add(this.button1);
-            this.groupBox6.Controls.Add(this.label5);
-            this.groupBox6.Controls.Add(this.label12);
-            this.groupBox6.Controls.Add(this.label14);
-            this.groupBox6.Controls.Add(this.label16);
-            this.groupBox6.Controls.Add(this.button5);
-            this.groupBox6.Controls.Add(this.label22);
-            this.groupBox6.Controls.Add(this.label23);
-            this.groupBox6.Controls.Add(this.label24);
-            this.groupBox6.Controls.Add(this.pictureBox3);
-            this.groupBox6.Location = new System.Drawing.Point(1140, 237);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(341, 235);
-            this.groupBox6.TabIndex = 64;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "청산신호 영역설정";
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label4.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label4.Location = new System.Drawing.Point(99, 148);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(228, 44);
-            this.label4.TabIndex = 63;
-            this.label4.Text = "청산신호 인식중";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label4.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(9, 21);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(329, 27);
-            this.button1.TabIndex = 48;
-            this.button1.Text = "인식영역 선택";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(105, 121);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(20, 18);
-            this.label5.TabIndex = 61;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(9, 61);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 12);
-            this.label12.TabIndex = 49;
-            this.label12.Text = "영역크기";
-            // 
-            // label14
-            // 
-            this.label14.BackColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(126, 121);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(158, 18);
-            this.label14.TabIndex = 58;
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label16
-            // 
-            this.label16.BackColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(9, 73);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(159, 20);
-            this.label16.TabIndex = 50;
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(290, 119);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(37, 25);
-            this.button5.TabIndex = 56;
-            this.button5.Text = "설정";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(173, 61);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(53, 12);
-            this.label22.TabIndex = 51;
-            this.label22.Text = "영역좌표";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(105, 104);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(77, 12);
-            this.label23.TabIndex = 54;
-            this.label23.Text = "신호컬러인식";
-            // 
-            // label24
-            // 
-            this.label24.BackColor = System.Drawing.Color.White;
-            this.label24.Location = new System.Drawing.Point(176, 73);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(159, 20);
-            this.label24.TabIndex = 52;
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Location = new System.Drawing.Point(21, 101);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(41, 91);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 53;
-            this.pictureBox3.TabStop = false;
-            // 
             // chk_자동매도
             // 
             this.chk_자동매도.AutoSize = true;
@@ -1342,15 +1176,322 @@
             this.chk_자동매수.UseVisualStyleBackColor = true;
             this.chk_자동매수.CheckedChanged += new System.EventHandler(this.chk_자동매수_CheckedChanged);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button1.Location = new System.Drawing.Point(20, 57);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 27);
+            this.button1.TabIndex = 67;
+            this.button1.Text = "수치조회창";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox3.Location = new System.Drawing.Point(117, 18);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(194, 118);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 68;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox4.Location = new System.Drawing.Point(333, 18);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(94, 24);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox4.TabIndex = 69;
+            this.pictureBox4.TabStop = false;
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox5.Location = new System.Drawing.Point(333, 48);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(94, 24);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox5.TabIndex = 70;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox6.Location = new System.Drawing.Point(333, 78);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(94, 24);
+            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox6.TabIndex = 71;
+            this.pictureBox6.TabStop = false;
+            // 
+            // lbl_종가
+            // 
+            this.lbl_종가.BackColor = System.Drawing.Color.White;
+            this.lbl_종가.Location = new System.Drawing.Point(435, 20);
+            this.lbl_종가.Name = "lbl_종가";
+            this.lbl_종가.Size = new System.Drawing.Size(78, 22);
+            this.lbl_종가.TabIndex = 72;
+            // 
+            // lbl_하늘색
+            // 
+            this.lbl_하늘색.BackColor = System.Drawing.Color.White;
+            this.lbl_하늘색.Location = new System.Drawing.Point(435, 50);
+            this.lbl_하늘색.Name = "lbl_하늘색";
+            this.lbl_하늘색.Size = new System.Drawing.Size(78, 22);
+            this.lbl_하늘색.TabIndex = 73;
+            // 
+            // lbl_회색
+            // 
+            this.lbl_회색.BackColor = System.Drawing.Color.White;
+            this.lbl_회색.Location = new System.Drawing.Point(435, 80);
+            this.lbl_회색.Name = "lbl_회색";
+            this.lbl_회색.Size = new System.Drawing.Size(78, 22);
+            this.lbl_회색.TabIndex = 74;
+            // 
+            // chk_숫자인식
+            // 
+            this.chk_숫자인식.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chk_숫자인식.Location = new System.Drawing.Point(394, 111);
+            this.chk_숫자인식.Name = "chk_숫자인식";
+            this.chk_숫자인식.Size = new System.Drawing.Size(101, 25);
+            this.chk_숫자인식.TabIndex = 75;
+            this.chk_숫자인식.Text = "숫자자동인식";
+            this.chk_숫자인식.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chk_숫자인식.UseVisualStyleBackColor = true;
+            this.chk_숫자인식.CheckedChanged += new System.EventHandler(this.chk_숫자인식_CheckedChanged);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.button1);
+            this.groupBox5.Controls.Add(this.chk_숫자인식);
+            this.groupBox5.Controls.Add(this.pictureBox3);
+            this.groupBox5.Controls.Add(this.lbl_회색);
+            this.groupBox5.Controls.Add(this.pictureBox4);
+            this.groupBox5.Controls.Add(this.lbl_하늘색);
+            this.groupBox5.Controls.Add(this.pictureBox5);
+            this.groupBox5.Controls.Add(this.lbl_종가);
+            this.groupBox5.Controls.Add(this.pictureBox6);
+            this.groupBox5.Location = new System.Drawing.Point(1006, 550);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(539, 141);
+            this.groupBox5.TabIndex = 76;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "groupBox5";
+            this.groupBox5.Visible = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label5);
+            this.groupBox6.Controls.Add(this.label4);
+            this.groupBox6.Controls.Add(this.nud_감소폭);
+            this.groupBox6.Controls.Add(this.chk_최소익절);
+            this.groupBox6.Controls.Add(this.nud_최소익절);
+            this.groupBox6.Controls.Add(this.chk_자동익절);
+            this.groupBox6.Controls.Add(this.chk_자동손절);
+            this.groupBox6.Controls.Add(this.nud_익절);
+            this.groupBox6.Controls.Add(this.nud_손절);
+            this.groupBox6.Location = new System.Drawing.Point(12, 506);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(493, 59);
+            this.groupBox6.TabIndex = 77;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "자동손익절기능 : 인식봉 1개당 1번만 거래";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(441, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 12);
+            this.label5.TabIndex = 75;
+            this.label5.Text = "감소";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(378, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.TabIndex = 74;
+            this.label4.Text = "최소익절";
+            // 
+            // nud_감소폭
+            // 
+            this.nud_감소폭.Enabled = false;
+            this.nud_감소폭.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nud_감소폭.Location = new System.Drawing.Point(443, 30);
+            this.nud_감소폭.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nud_감소폭.Name = "nud_감소폭";
+            this.nud_감소폭.Size = new System.Drawing.Size(43, 21);
+            this.nud_감소폭.TabIndex = 73;
+            this.nud_감소폭.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.nud_감소폭.ValueChanged += new System.EventHandler(this.nud_감소폭_ValueChanged);
+            // 
+            // chk_최소익절
+            // 
+            this.chk_최소익절.AutoSize = true;
+            this.chk_최소익절.Location = new System.Drawing.Point(288, 30);
+            this.chk_최소익절.Name = "chk_최소익절";
+            this.chk_최소익절.Size = new System.Drawing.Size(91, 16);
+            this.chk_최소익절.TabIndex = 72;
+            this.chk_최소익절.Text = "StopTrailing";
+            this.chk_최소익절.UseVisualStyleBackColor = true;
+            this.chk_최소익절.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chk_최소익절_MouseUp);
+            // 
+            // nud_최소익절
+            // 
+            this.nud_최소익절.Enabled = false;
+            this.nud_최소익절.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nud_최소익절.Location = new System.Drawing.Point(380, 30);
+            this.nud_최소익절.Maximum = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            this.nud_최소익절.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_최소익절.Name = "nud_최소익절";
+            this.nud_최소익절.Size = new System.Drawing.Size(58, 21);
+            this.nud_최소익절.TabIndex = 71;
+            this.nud_최소익절.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.nud_최소익절.ValueChanged += new System.EventHandler(this.nud_최소익절_ValueChanged);
+            // 
+            // chk_자동익절
+            // 
+            this.chk_자동익절.AutoSize = true;
+            this.chk_자동익절.Location = new System.Drawing.Point(149, 30);
+            this.chk_자동익절.Name = "chk_자동익절";
+            this.chk_자동익절.Size = new System.Drawing.Size(48, 16);
+            this.chk_자동익절.TabIndex = 70;
+            this.chk_자동익절.Text = "익절";
+            this.chk_자동익절.UseVisualStyleBackColor = true;
+            this.chk_자동익절.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chk_자동익절_MouseUp);
+            // 
+            // chk_자동손절
+            // 
+            this.chk_자동손절.AutoSize = true;
+            this.chk_자동손절.Location = new System.Drawing.Point(12, 30);
+            this.chk_자동손절.Name = "chk_자동손절";
+            this.chk_자동손절.Size = new System.Drawing.Size(48, 16);
+            this.chk_자동손절.TabIndex = 69;
+            this.chk_자동손절.Text = "손절";
+            this.chk_자동손절.UseVisualStyleBackColor = true;
+            this.chk_자동손절.CheckedChanged += new System.EventHandler(this.chk_자동손절_CheckedChanged);
+            // 
+            // nud_익절
+            // 
+            this.nud_익절.Enabled = false;
+            this.nud_익절.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nud_익절.Location = new System.Drawing.Point(199, 27);
+            this.nud_익절.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nud_익절.Name = "nud_익절";
+            this.nud_익절.Size = new System.Drawing.Size(58, 21);
+            this.nud_익절.TabIndex = 68;
+            this.nud_익절.Value = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.nud_익절.ValueChanged += new System.EventHandler(this.nud_익절_ValueChanged);
+            // 
+            // nud_손절
+            // 
+            this.nud_손절.Enabled = false;
+            this.nud_손절.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nud_손절.Location = new System.Drawing.Point(63, 27);
+            this.nud_손절.Maximum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nud_손절.Minimum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            -2147483648});
+            this.nud_손절.Name = "nud_손절";
+            this.nud_손절.Size = new System.Drawing.Size(58, 21);
+            this.nud_손절.TabIndex = 66;
+            this.nud_손절.Value = new decimal(new int[] {
+            150,
+            0,
+            0,
+            -2147483648});
+            this.nud_손절.ValueChanged += new System.EventHandler(this.nud_손절_ValueChanged);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.lbl_인식봉);
+            this.groupBox7.Location = new System.Drawing.Point(945, 365);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(57, 59);
+            this.groupBox7.TabIndex = 78;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "인식봉";
+            // 
+            // lbl_인식봉
+            // 
+            this.lbl_인식봉.BackColor = System.Drawing.Color.White;
+            this.lbl_인식봉.Location = new System.Drawing.Point(6, 24);
+            this.lbl_인식봉.Name = "lbl_인식봉";
+            this.lbl_인식봉.Size = new System.Drawing.Size(44, 26);
+            this.lbl_인식봉.TabIndex = 12;
+            this.lbl_인식봉.Text = "0";
+            this.lbl_인식봉.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1044, 568);
+            this.ClientSize = new System.Drawing.Size(1033, 577);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.chk_자동매도);
             this.Controls.Add(this.chk_자동매수);
-            this.Controls.Add(this.groupBox6);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -1364,14 +1505,13 @@
             this.Controls.Add(this.dtp_종료시간);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(850, 450);
             this.Name = "MainFrm";
-            this.Text = "신호인식자동매매_Test_1.4.2";
+            this.Text = "신호인식자동매매_Test_1.4.8";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1387,12 +1527,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_몸통크기)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_감소폭)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_최소익절)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_익절)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_손절)).EndInit();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1450,30 +1596,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbl_크기확인;
         private System.Windows.Forms.NumericUpDown nud_몸통크기;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label lbl_음봉컬러;
         private System.Windows.Forms.Label lbl_양봉컬러;
         private System.Windows.Forms.Label lbl_음봉신호;
@@ -1513,6 +1635,34 @@
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.CheckBox chk_자동매도;
         private System.Windows.Forms.CheckBox chk_자동매수;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.Label lbl_종가;
+        private System.Windows.Forms.Label lbl_하늘색;
+        private System.Windows.Forms.Label lbl_회색;
+        private System.Windows.Forms.CheckBox chk_숫자인식;
+        private System.Windows.Forms.Label lbl_횡보신호발생;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lbl_횡보신호컬러;
+        private System.Windows.Forms.Button btn_횡보설정;
+        private System.Windows.Forms.Label lbl_횡보신호;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox chk_횡보신호사용;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label lbl_인식봉;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown nud_감소폭;
+        private System.Windows.Forms.CheckBox chk_최소익절;
+        private System.Windows.Forms.NumericUpDown nud_최소익절;
+        private System.Windows.Forms.CheckBox chk_자동익절;
+        private System.Windows.Forms.CheckBox chk_자동손절;
+        private System.Windows.Forms.NumericUpDown nud_익절;
+        private System.Windows.Forms.NumericUpDown nud_손절;
     }
 }
 

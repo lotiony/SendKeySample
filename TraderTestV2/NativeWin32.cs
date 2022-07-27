@@ -67,6 +67,9 @@ namespace TraderTestV2
         [DllImport("user32")]
         public static extern IntPtr GetDesktopWindow();
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowRect(IntPtr hWnd, ref Rect rect);
+
         [DllImport("user32")]
         public static extern IntPtr GetClassName(IntPtr hwnd, StringBuilder lpClassName, int nMaxCount);
 
@@ -79,7 +82,14 @@ namespace TraderTestV2
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
 
-
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
     }
 
     public class WindowHandleInfo

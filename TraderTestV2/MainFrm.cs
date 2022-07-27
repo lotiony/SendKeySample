@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,35 +11,44 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TraderTestV2.Model;
+using static TraderTestV2.NativeWin32;
 using static TraderTestV2.WinAppServices;
 
 namespace TraderTestV2
 {
     public partial class MainFrm : Form
     {
-        protected Status _status;
+        public Status _status;
         protected ChartRecognition cr;
         protected ChartRecognition crSub;
+        protected BarRecognition br;
+        protected AutoProfit _ap;
 
         public Setting valueSetting;
 
         ObservableCollection<ApplicationInfo> applicationInfos;
+        ConcurrentDictionary<int, OneTrade> oneTradeDic;
+
         ApplicationInfo selectedItem;
         Timer timer;
         Timer signalResetTimer;
-        //Timer 진입중Timer;
+        Timer 진입중Timer;
         Timer 시작Timer;
-
+        Timer 인식Timer;
         Timer colorTm;
         Timer RunTm;
         Label colorLb;
         Label signalLb;
-        bool 자동매수, 자동매도, 자동스위칭, 진입중 = false;
+        bool 자동매수, 자동매도, 자동스위칭, 진입중, 인식봉거래완료 = false;
         bool 매도체크, 매수체크, 자동실행중 = false;
+        bool 자동손익절 = false;
         int 기준계약수 = 1;
+        int 인식봉수 = 0;
+        int 최대이익 = 0;
         IntPtr selectedHandle { get { return selectedItem?.Handle ?? IntPtr.Zero; } }
         IntPtr orderCountHandle { get; set; }
         Bitmap screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
+        Ocr ocr = new Ocr();
 
         public MainFrm()
         {
@@ -57,21 +67,27 @@ namespace TraderTestV2
             RunTm.Tick += RunTm_Tick;
             RunTm.Start();
 
-            //진입중Timer = new Timer();
-            //진입중Timer.Interval = 5000;
-            //진입중Timer.Tick += 진입중Timer_Tick;
+            진입중Timer = new Timer();
+            진입중Timer.Interval = 5000;
+            진입중Timer.Tick += 진입중Timer_Tick;
+            인식Timer = new Timer();
+            인식Timer.Interval = 1000;
+            인식Timer.Tick += 인식Timer_Tick;
 
             시작Timer = new Timer();
             시작Timer.Interval = 1000;
             시작Timer.Tick += 시작Timer_Tick;
 
             _status = new Status();
+            _ap = new AutoProfit();
 
             grp_몸통인식설정.Enabled = true;
             grp_신호인식설정.Enabled = false;
             rb_몸통인식.Checked = true;
             LoadInfo();
         }
+
+
 
         private void 시작Timer_Tick(object sender, EventArgs e)
         {
@@ -87,7 +103,8 @@ namespace TraderTestV2
 
         private void 진입중Timer_Tick(object sender, EventArgs e)
         {
-            btn_일괄취소_Click(null, null);
+            진입중 = false;
+            진입중Timer.Stop();
         }
 
         private void RunTm_Tick(object sender, EventArgs e)
@@ -116,6 +133,7 @@ namespace TraderTestV2
                 lbl_매도신호발생.Visible = false;
                 lbl_매수청산신호발생.Visible = false;
                 lbl_매도청산신호발생.Visible = false;
+                lbl_횡보신호발생.Visible = false;
             }));
         }
 
@@ -139,7 +157,7 @@ namespace TraderTestV2
                 if (_status.OldPosType != _status.PosType)
                 {
                     _status.OldPosType = _status.PosType;
-                    진입중 = false;
+                    //진입중 = false;
                     //진입중Timer.Stop();
                     lbl_진입중.Visible = false;
                 }
@@ -188,6 +206,40 @@ namespace TraderTestV2
                 {
                     _status.Profit = 0;
                     lbl_평가손익.Text = "0";
+                }
+            }
+
+
+            // 자동손익절 기능을 사용하면 인식봉마다 포지션 체크를 한다.
+            if (자동손익절 || _status.PosType != CType.없음)
+            {
+                // 스탑트레일링 사용시
+                if (_ap.최소익절)
+                {
+                    // 현재 이익중이면 
+                    if (_status.Profit > 0) { this.최대이익 = Math.Max(this.최대이익, _status.Profit); }
+
+                    // 최대이익이 최소익절금액보다 크고,  최대이익-감소폭이 현재가보다 크거나 같으면 청산
+                    if (this.최대이익 >= _ap.최소익절타겟 && (this.최대이익 - _ap.감소폭 >= _status.Profit)  )
+                    {
+                        일괄청산();
+                    }
+                }
+                if (_ap.익절)
+                {
+                    // 현재 이익중이면 
+                    if (_status.Profit >= _ap.익절타겟)
+                    {
+                        일괄청산();
+                    }
+                }
+                if (_ap.손절)
+                {
+                    // 현재 손실중이면 
+                    if (_status.Profit <= _ap.손절타겟)
+                    {
+                        일괄청산();
+                    }
                 }
             }
         }
@@ -310,7 +362,8 @@ namespace TraderTestV2
                 Ctrl_자동주문(false);
                 btn_인식영역선택.Text = "선택 완료";
                 cr?.Stop();
-                crSub?.Stop();
+                //crSub?.Stop();
+                br?.Stop();
                 areaForm = new SelectArea();
                 areaForm.TopMost = true;
                 areaForm.Show();
@@ -336,7 +389,7 @@ namespace TraderTestV2
                 //cr?.Start();
 
                 Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
-                crSub?.Update(sArea);
+                br?.Update(sArea);
                 //crSub?.Start();
             }
         }
@@ -369,6 +422,7 @@ namespace TraderTestV2
             valueSetting.SellOut = lbl_매도청산컬러.BackColor;
             valueSetting.COIBuy = lbl_COI매수컬러.BackColor;
             valueSetting.COISell = lbl_COI매도컬러.BackColor;
+            valueSetting.HBo = lbl_횡보신호컬러.BackColor;
 
             Common.SaveSetting(valueSetting);
         }
@@ -417,6 +471,10 @@ namespace TraderTestV2
             c = valueSetting.COISell;
             lbl_COI매도컬러.BackColor = c;
             lbl_COI매도신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
+
+            c = valueSetting.HBo;
+            lbl_횡보신호컬러.BackColor = c;
+            lbl_횡보신호.Text = $"{RGBConverter(c)} / {HexConverter(c)}";
 
             nud_몸통크기.Value = valueSetting.BodySize;
 
@@ -508,8 +566,10 @@ namespace TraderTestV2
                                        , lbl_매도청산컬러.BackColor
                                        , lbl_COI매수컬러.BackColor
                                        , lbl_COI매도컬러.BackColor
+                                       , lbl_횡보신호컬러.BackColor
                                        , (int)nud_몸통크기.Value
                                        , rb_몸통인식.Checked ? 인식모드.몸통인식 : 인식모드.신호인식
+                                       , chk_횡보신호사용.Checked
                                        );
         }
 
@@ -550,11 +610,13 @@ namespace TraderTestV2
                 시작Timer.Stop();
                 Ctrl_자동주문(false);
                 cr?.Stop();
-                crSub?.Stop();
+                //crSub?.Stop();
+                br?.Stop();
                 PreviewPicture();
-                CrSub_UpdateEvent();
+                //CrSub_UpdateEvent();
                 cr = null;
-                crSub = null;
+                //crSub = null;
+                br = null;
                 청산_Click(null, null);
             }
 
@@ -565,7 +627,7 @@ namespace TraderTestV2
             Ctrl_자동주문(true);
 
             // 기본 인식 스레드
-            cr = new ChartRecognition(valueSetting, 50, 1);
+            cr = new ChartRecognition(valueSetting, 500, 1);
             cr.UpdateEvent += Cr_UpdateEvent;
             cr.Buy += Cr_Buy;
             cr.Sell += Cr_Sell;
@@ -576,27 +638,57 @@ namespace TraderTestV2
             cr.CoiBuy += Cr_CoiBuy;
             cr.CoiSell += Cr_CoiSell;
             cr.Clear += SignalClear;
+            cr.HBO += Cr_HBO;
             cr.Start();
 
-            /// 보조 확인 영역은 본 지정 영역의 바로 좌측에 동일 사이즈
+            ///// 보조 확인 영역은 본 지정 영역의 바로 좌측에 동일 사이즈
+            //Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
+            //crSub = new ChartRecognition(valueSetting, 100, 2);
+            //crSub.Update(sArea);
+            //crSub.UpdateEvent += CrSub_UpdateEvent;
+            //crSub.Buy += Cr_Buy;
+            //crSub.Sell += Cr_Sell;
+            //crSub.BodyP += Cr_BodyP;
+            //crSub.BodyN += Cr_BodyN;
+            //crSub.BuyOut += Cr_BuyOut;
+            //crSub.SellOut += Cr_SellOut;
+            //crSub.CoiBuy += Cr_CoiBuy;
+            //crSub.CoiSell += Cr_CoiSell;
+            //crSub.Clear += SignalClear;
+            //crSub.Start();
             Rectangle sArea = new Rectangle(rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
-            crSub = new ChartRecognition(valueSetting, 100, 2);
-            crSub.Update(sArea);
-            crSub.UpdateEvent += CrSub_UpdateEvent;
-            crSub.Buy += Cr_Buy;
-            crSub.Sell += Cr_Sell;
-            crSub.BodyP += Cr_BodyP;
-            crSub.BodyN += Cr_BodyN;
-            crSub.BuyOut += Cr_BuyOut;
-            crSub.SellOut += Cr_SellOut;
-            crSub.CoiBuy += Cr_CoiBuy;
-            crSub.CoiSell += Cr_CoiSell;
-            crSub.Clear += SignalClear;
-            crSub.Start();
+            br = new BarRecognition(valueSetting, 1000, 2);
+            br.Update(sArea);
+            br.UpdateEvent += Br_UpdateEvent;
+            br.Start();
 
             진입중 = false;
             //진입중Timer.Stop();
             lbl_진입중.Visible = false;
+        }
+
+        private void Cr_HBO(byte fromCr)
+        {
+            this.Invoke(new MethodInvoker(delegate () {
+                /// 메인이미지에서만 작동한다.
+                if (fromCr == 1)
+                {
+                    lbl_횡보신호발생.Visible = true;
+                    // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
+                    if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
+                    {
+                        switch (_status.PosType)
+                        {
+                            case CType.매수:
+                            case CType.매도:
+                                일괄청산();
+                                break;
+                            case CType.없음:
+                                break;
+                        }
+                    }
+                }
+            }));
         }
 
 
@@ -609,20 +701,25 @@ namespace TraderTestV2
         {
             this.Invoke(new MethodInvoker(delegate () {
                 /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
-                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                if (fromCr == 1)
                 {
                     lbl_매도청산신호발생.Visible = true;
+                    
                     // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                    switch (_status.PosType)
+                    if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        case CType.매수:
-                            break;
-                        case CType.매도:
-                            일괄청산();
-                            break;
-                        case CType.없음:
-                            break;
+                        switch (_status.PosType)
+                        {
+                            case CType.매수:
+                                break;
+                            case CType.매도:
+                                일괄청산();
+                                break;
+                            case CType.없음:
+                                break;
+                        }
                     }
+                        
                 }
 
             }));
@@ -636,19 +733,23 @@ namespace TraderTestV2
         {
             this.Invoke(new MethodInvoker(delegate () {
                 /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
-                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                if (fromCr == 1)
                 {
                     lbl_매수청산신호발생.Visible = true;
+
                     // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
-                    switch (_status.PosType)
+                    if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        case CType.매수:
-                            일괄청산();
-                            break;
-                        case CType.매도:
-                            break;
-                        case CType.없음:
-                            break;
+                        switch (_status.PosType)
+                        {
+                            case CType.매수:
+                                일괄청산();
+                                break;
+                            case CType.매도:
+                                break;
+                            case CType.없음:
+                                break;
+                        }
                     }
                 }
 
@@ -666,6 +767,9 @@ namespace TraderTestV2
                 if (fromCr == 1)
                 {
                     lbl_음봉발생.Visible = true;
+
+                    // 자동손익절기능 사용중이고 이번 봉에 손/익절을 한번이라도 했으면 패스
+                    if (this.자동손익절 && this.인식봉거래완료) return;
 
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
@@ -720,6 +824,10 @@ namespace TraderTestV2
                 if (fromCr == 1)
                 {
                     lbl_양봉발생.Visible = true;
+
+                    // 자동손익절기능 사용중이고 이번 봉에 손/익절을 한번이라도 했으면 패스
+                    if (this.자동손익절 && this.인식봉거래완료) return;
+
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
                         if (자동매수)
@@ -766,7 +874,7 @@ namespace TraderTestV2
             this.Invoke(new MethodInvoker(delegate () {
 
                 /// 이 신호는 메인영역에서만 인식시킨다
-                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                if (fromCr == 1)
                 {
                     lbl_COI매수발생.Visible = true;
                 }
@@ -800,9 +908,13 @@ namespace TraderTestV2
         {
             this.Invoke(new MethodInvoker(delegate () {
                 /// 신호의 우선순위를 주기 위해서 fromCr 이 1이면 bypass,  2이면 메인cr의 신호발생여부가 false일때에만 이 신호를 유효신호로 사용한다)
-                if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
+                if (fromCr == 1)
                 {
                     lbl_매도신호발생.Visible = true;
+
+                    // 자동손익절기능 사용중이고 이번 봉에 손/익절을 한번이라도 했으면 패스
+                    if (this.자동손익절 && this.인식봉거래완료) return;
+
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
                         if (자동매도)   // chk_자동매도 = true 인 경우에만 진행
@@ -846,6 +958,10 @@ namespace TraderTestV2
                 if (fromCr == 1 || (fromCr == 2 && !cr.IsSignaled))
                 {
                     lbl_매수신호발생.Visible = true;
+
+                    // 자동손익절기능 사용중이고 이번 봉에 손/익절을 한번이라도 했으면 패스
+                    if (this.자동손익절 && this.인식봉거래완료) return;
+
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
                         if (자동매수)   // chk_자동매수 = true 인 경우에만 진행
@@ -882,13 +998,18 @@ namespace TraderTestV2
             {
                 btn_자동주문.Text = "작동중지";
                 자동실행중 = true;
+                인식봉수 = 0;
+                인식봉거래완료 = false;
                 자동매수 = chk_자동매수.Checked;
+                oneTradeDic = new ConcurrentDictionary<int, OneTrade>();
                 //nud_몸통크기.Enabled = true;
             }
             else
             {
                 btn_자동주문.Text = "작동시작";
                 자동실행중 = false;
+                인식봉수 = 0;
+                인식봉거래완료 = false;
                 자동매도 = chk_자동매도.Checked;
                 //nud_몸통크기.Enabled = false;
             }
@@ -898,7 +1019,8 @@ namespace TraderTestV2
         private void 매도진입()
         {
             진입중 = true;
-            //진입중Timer.Start();
+            진입중Timer.Stop();
+            진입중Timer.Start();
             lbl_진입중.Visible = true;
 
             매도_Click(null, null);
@@ -913,7 +1035,8 @@ namespace TraderTestV2
         private void 매도스위칭()
         {
             진입중 = true;
-            //진입중Timer.Start();
+            진입중Timer.Stop();
+            진입중Timer.Start();
             lbl_진입중.Visible = true;
 
             btn_매도스위칭_Click(null, null);
@@ -927,8 +1050,37 @@ namespace TraderTestV2
         private void 일괄청산()
         {
             진입중 = true;
-            //진입중Timer.Start();
+            진입중Timer.Stop();
+            진입중Timer.Start();
             lbl_진입중.Visible = true;
+
+            if (this.자동손익절 || _status.PosType != CType.없음)
+            {
+                OneTrade onTrade;
+                if (oneTradeDic.ContainsKey(인식봉수))
+                {
+                    onTrade = oneTradeDic[인식봉수];
+                }
+                else
+                {
+                    onTrade = new OneTrade();
+                    oneTradeDic.TryAdd(인식봉수, onTrade);
+                }
+
+
+                switch (_status.PosType)
+                {
+                    case CType.매도:
+                        onTrade.매도거래완료 = true;
+                        break;
+                    case CType.매수:
+                        onTrade.매수거래완료 = true;
+                        break;
+                }
+                this.인식봉거래완료 = true;
+                this.최대이익 = 0;
+            }
+
 
             청산_Click(null, null);
             //this.btn_청산.PerformClick();
@@ -941,7 +1093,8 @@ namespace TraderTestV2
         private void 매수스위칭()
         {
             진입중 = true;
-            //진입중Timer.Start();
+            진입중Timer.Stop();
+            진입중Timer.Start();
             lbl_진입중.Visible = true;
 
             btn_매수스위칭_Click(null, null);
@@ -955,7 +1108,8 @@ namespace TraderTestV2
         private void 매수진입()
         {
             진입중 = true;
-            //진입중Timer.Start();
+            진입중Timer.Stop();
+            진입중Timer.Start();
             lbl_진입중.Visible = true;
 
             매수_Click(null, null);
@@ -984,16 +1138,31 @@ namespace TraderTestV2
 
         private void CrSub_UpdateEvent()
         {
+            //try
+            //{
+            //    this.Invoke(new MethodInvoker(delegate () { pictureBox2.Image = crSub?.CaptureBitmap ?? null; }));
+            //}
+            //catch (Exception)
+            //{
+            //}
+            
+        }
+
+        private void Br_UpdateEvent()
+        {
             try
             {
-                this.Invoke(new MethodInvoker(delegate () { pictureBox2.Image = crSub?.CaptureBitmap ?? null; }));
+                this.인식봉수++;
+                this.인식봉거래완료 = false;
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    lbl_인식봉.Text = 인식봉수.ToString("N0");
+                }));
             }
             catch (Exception)
             {
             }
-            
         }
-
 
 
         private void btn_매수설정_Click(object sender, EventArgs e)
@@ -1026,6 +1195,10 @@ namespace TraderTestV2
         private void btn_매도청산설정_Click(object sender, EventArgs e)
         {
             SetColor(컬러설정.매도청산);
+        }
+        private void btn_횡보설정_Click(object sender, EventArgs e)
+        {
+            SetColor(컬러설정.횡보신호);
         }
 
         private void SetColor(컬러설정 type)
@@ -1063,6 +1236,10 @@ namespace TraderTestV2
                 case 컬러설정.COI매도:
                     this.colorLb = lbl_COI매도컬러;
                     this.signalLb = lbl_COI매도신호;
+                    break;
+                case 컬러설정.횡보신호:
+                    this.colorLb = lbl_횡보신호컬러;
+                    this.signalLb = lbl_횡보신호;
                     break;
             }
 
@@ -1156,6 +1333,176 @@ namespace TraderTestV2
         private void chk_자동매도_CheckedChanged(object sender, EventArgs e)
         {
             this.자동매도 = chk_자동매도.Checked;
+        }
+
+        long 수치창hwnd = 0;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            IntPtr nDeshWndHandle = NativeWin32.GetDesktopWindow();
+            수치창hwnd = FindSubHandle(nDeshWndHandle, HtsControls.수치조회창);
+
+            if (수치창hwnd > 0)
+            {
+                Rect rect = new Rect();
+                IntPtr error = GetWindowRect((IntPtr)수치창hwnd, ref rect);
+
+                // sometimes it gives error.
+                while (error == (IntPtr)0)
+                {
+                    error = GetWindowRect((IntPtr)수치창hwnd, ref rect);
+                }
+
+                int width = rect.right - rect.left;
+                int height = rect.bottom - rect.top;
+
+                var bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                Graphics g = Graphics.FromImage(bmp);
+                g.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                pictureBox3.Image = bmp;
+
+                var 종가bmp = cropAtRect(bmp, new Rectangle(105,94,52,14));
+                pictureBox4.Image = 종가bmp;
+
+                var 하늘색bmp = cropAtRect(bmp, new Rectangle(105, 120, 50, 14));
+                pictureBox5.Image = 하늘색bmp;
+
+                var 회색bmp = cropAtRect(bmp, new Rectangle(105, 134, 50, 14));
+                pictureBox6.Image = 회색bmp;
+
+
+            }
+
+
+        }
+
+
+        private void chk_숫자인식_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chk_숫자인식.Checked)
+            {
+                인식Timer.Start();
+            }
+            else
+            {
+                인식Timer.Stop();
+            }
+        }
+        private void 인식Timer_Tick(object sender, EventArgs e)
+        {
+            if (수치창hwnd > 0)
+            {
+                Rect rect = new Rect();
+                IntPtr error = GetWindowRect((IntPtr)수치창hwnd, ref rect);
+
+                // sometimes it gives error.
+                while (error == (IntPtr)0)
+                {
+                    error = GetWindowRect((IntPtr)수치창hwnd, ref rect);
+                }
+
+                int width = rect.right - rect.left;
+                int height = rect.bottom - rect.top;
+
+                var bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                Graphics g = Graphics.FromImage(bmp);
+                g.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                pictureBox3.Image = bmp;
+                
+                var 종가bmp = cropAtRect(bmp, new Rectangle(102, 93, 57, 18));
+                pictureBox4.Image = 종가bmp;
+                lbl_종가.Text = ocr.RecogNumber(종가bmp);
+
+                var 하늘색bmp = cropAtRect(bmp, new Rectangle(102, 119, 55, 17));
+                pictureBox5.Image = 하늘색bmp;
+                lbl_하늘색.Text = ocr.RecogNumber(하늘색bmp);
+
+                var 회색bmp = cropAtRect(bmp, new Rectangle(102, 132, 55, 18));
+                pictureBox6.Image = 회색bmp;
+                lbl_회색.Text = ocr.RecogNumber(회색bmp);
+
+
+            }
+        }
+
+
+        public Bitmap cropAtRect(Bitmap orgImg, Rectangle sRect)
+        {
+            Rectangle destRect = new Rectangle(Point.Empty, sRect.Size);
+
+            var cropImage = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format24bppRgb);
+            using (var graphics = Graphics.FromImage(cropImage))
+            {
+                graphics.DrawImage(orgImg, destRect, sRect, GraphicsUnit.Pixel);
+            }
+            return cropImage;
+        }
+
+        private void chk_자동손절_CheckedChanged(object sender, EventArgs e)
+        {
+            nud_손절.Enabled = chk_자동손절.Checked;
+            SetAutoProfit();
+        }
+
+
+        private void nud_손절_ValueChanged(object sender, EventArgs e)
+        {
+            SetAutoProfit();
+        }
+
+        private void nud_익절_ValueChanged(object sender, EventArgs e)
+        {
+            SetAutoProfit();
+        }
+        private void chk_자동익절_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (chk_자동익절.Checked)  chk_최소익절.Checked = !chk_자동익절.Checked;
+            nud_익절.Enabled = chk_자동익절.Checked;
+            nud_최소익절.Enabled = chk_최소익절.Checked;
+            nud_감소폭.Enabled = chk_최소익절.Checked;
+            SetAutoProfit();
+        }
+
+        private void chk_최소익절_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (chk_최소익절.Checked) chk_자동익절.Checked = !chk_최소익절.Checked;
+            nud_익절.Enabled = chk_자동익절.Checked;
+            nud_최소익절.Enabled = chk_최소익절.Checked;
+            nud_감소폭.Enabled = chk_최소익절.Checked;
+            SetAutoProfit();
+        }
+
+        private void chk_최소익절_Click(object sender, EventArgs e)
+        {
+            SetAutoProfit();
+        }
+
+        private void nud_최소익절_ValueChanged(object sender, EventArgs e)
+        {
+            SetAutoProfit();
+        }
+
+        private void nud_감소폭_ValueChanged(object sender, EventArgs e)
+        {
+            SetAutoProfit();
+        }
+
+        private void SetAutoProfit()
+        {
+            this._ap.손절 = this.chk_자동손절.Checked;
+            this._ap.익절 = this.chk_자동익절.Checked;
+            this._ap.최소익절 = this.chk_최소익절.Checked;
+            this._ap.손절타겟 = (int)this.nud_손절.Value;
+            this._ap.익절타겟 = (int)this.nud_익절.Value;
+            this._ap.최소익절타겟 = (int)this.nud_최소익절.Value;
+            this._ap.감소폭 = (int)this.nud_감소폭.Value;
+            this.자동손익절 = (this._ap.손절 || this._ap.익절 || this._ap.최소익절);
+        }
+
+
+
+        private void chk_횡보신호사용_CheckedChanged(object sender, EventArgs e)
+        {
+            this.valueSetting.UseHBo = chk_횡보신호사용.Checked;
         }
 
         private void ColorTm_Tick(object sender, EventArgs e)

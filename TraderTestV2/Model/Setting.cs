@@ -28,6 +28,9 @@ namespace TraderTestV2.Model
         public Color COIBuy { get; set; } = Color.White;
         [ScriptIgnore]
         public Color COISell { get; set; } = Color.White;
+        [ScriptIgnore]
+        public Color HBo { get; set; } = Color.White;
+
 
 
         public int BodySize { get; set; } = 10;
@@ -74,10 +77,17 @@ namespace TraderTestV2.Model
             get { return ColorTranslator.ToHtml(COISell); }
             set { COISell = ColorTranslator.FromHtml(value); }
         }
+        public string ColorHBo
+        {
+            get { return ColorTranslator.ToHtml(HBo); }
+            set { HBo = ColorTranslator.FromHtml(value); }
+        }
+
+        public bool UseHBo { get; set; } = true;
 
         public Setting() { }
 
-        public Setting(Rectangle recogArea, Color body_P, Color body_N, Color buy, Color sell, Color buyOut, Color sellOut, Color coiBuy, Color coiSell, int bodySize, 인식모드 recogMode)
+        public Setting(Rectangle recogArea, Color body_P, Color body_N, Color buy, Color sell, Color buyOut, Color sellOut, Color coiBuy, Color coiSell, Color hbo, int bodySize, 인식모드 recogMode, bool useHBo)
         {
             RecogArea = recogArea;
             Body_P = body_P;
@@ -88,8 +98,10 @@ namespace TraderTestV2.Model
             SellOut = sellOut;
             COIBuy = coiBuy;
             COISell = coiSell;
+            HBo = hbo;
             BodySize = bodySize;
             RecogMode = recogMode;
+            UseHBo = useHBo;
         }
     }
 
@@ -102,7 +114,8 @@ namespace TraderTestV2.Model
         매수청산,
         매도청산,
         COI매수,
-        COI매도
+        COI매도,
+        횡보신호
     }
 
     public enum 인식모드
