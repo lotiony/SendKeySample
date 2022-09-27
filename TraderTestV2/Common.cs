@@ -15,10 +15,6 @@ namespace TraderTestV2
 
         public static void SaveSetting(Setting set)
         {
-            JavaScriptSerializer ser = new JavaScriptSerializer();
-            string jsonString = ser.Serialize(set);
-
-            File.WriteAllText(SettingFile, jsonString);
         }
 
         public static Setting LoadSetting()

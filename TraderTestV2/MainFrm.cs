@@ -45,6 +45,9 @@ namespace TraderTestV2
         int 기준계약수 = 1;
         int 인식봉수 = 0;
         int 최대이익 = 0;
+        long _lastOrder = 0;
+        long _nowTickSecond { get { return DateTime.Now.Ticks / 1000000; } }
+
         IntPtr selectedHandle { get { return selectedItem?.Handle ?? IntPtr.Zero; } }
         IntPtr orderCountHandle { get; set; }
         Bitmap screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
@@ -677,15 +680,7 @@ namespace TraderTestV2
                     // 현재 포지션을 들고 있는지 여부에 따라서 다르게 처리
                     if (!진입중)       // 이미 주문이 실행중이라면  패스한다.
                     {
-                        switch (_status.PosType)
-                        {
-                            case CType.매수:
-                            case CType.매도:
-                                일괄청산();
-                                break;
-                            case CType.없음:
-                                break;
-                        }
+                        if (_status.Contracts > 0) 일괄청산();
                     }
                 }
             }));
@@ -1018,13 +1013,18 @@ namespace TraderTestV2
         
         private void 매도진입()
         {
-            진입중 = true;
-            진입중Timer.Stop();
-            진입중Timer.Start();
-            lbl_진입중.Visible = true;
+            if (_lastOrder + 50 < _nowTickSecond)
+            {
+                진입중 = true;
+                진입중Timer.Stop();
+                진입중Timer.Start();
+                lbl_진입중.Visible = true;
 
-            매도_Click(null, null);
-            
+                _lastOrder = _nowTickSecond;
+                매도_Click(null, null);
+            }
+
+
             //this.btn_매도.PerformClick();
             //if (selectedItem != null)
             //{
@@ -1034,12 +1034,16 @@ namespace TraderTestV2
         }
         private void 매도스위칭()
         {
-            진입중 = true;
-            진입중Timer.Stop();
-            진입중Timer.Start();
-            lbl_진입중.Visible = true;
+            if (_lastOrder + 50 < _nowTickSecond)
+            {
+                진입중 = true;
+                진입중Timer.Stop();
+                진입중Timer.Start();
+                lbl_진입중.Visible = true;
 
-            btn_매도스위칭_Click(null, null);
+                _lastOrder = _nowTickSecond;
+                btn_매도스위칭_Click(null, null);
+            }
             //this.btn_매도스위칭.PerformClick();
             //if (selectedItem != null)
             //{
@@ -1049,40 +1053,49 @@ namespace TraderTestV2
         }
         private void 일괄청산()
         {
-            진입중 = true;
-            진입중Timer.Stop();
-            진입중Timer.Start();
-            lbl_진입중.Visible = true;
 
-            if (this.자동손익절 || _status.PosType != CType.없음)
+            if (_status.Contracts > 0 && _lastOrder + 10 < _nowTickSecond)
             {
-                OneTrade onTrade;
-                if (oneTradeDic.ContainsKey(인식봉수))
+
+                if (this.자동손익절 || _status.PosType != CType.없음)
                 {
-                    onTrade = oneTradeDic[인식봉수];
-                }
-                else
-                {
-                    onTrade = new OneTrade();
-                    oneTradeDic.TryAdd(인식봉수, onTrade);
+                    OneTrade onTrade;
+                    if (oneTradeDic.ContainsKey(인식봉수))
+                    {
+                        onTrade = oneTradeDic[인식봉수];
+                    }
+                    else
+                    {
+                        onTrade = new OneTrade();
+                        oneTradeDic.TryAdd(인식봉수, onTrade);
+                    }
+
+
+                    switch (_status.PosType)
+                    {
+                        case CType.매도:
+                            onTrade.매도거래완료 = true;
+                            break;
+                        case CType.매수:
+                            onTrade.매수거래완료 = true;
+                            break;
+                    }
+                    this.인식봉거래완료 = true;
+                    this.최대이익 = 0;
                 }
 
 
-                switch (_status.PosType)
-                {
-                    case CType.매도:
-                        onTrade.매도거래완료 = true;
-                        break;
-                    case CType.매수:
-                        onTrade.매수거래완료 = true;
-                        break;
-                }
-                this.인식봉거래완료 = true;
-                this.최대이익 = 0;
+                진입중 = true;
+                진입중Timer.Stop();
+                진입중Timer.Start();
+                lbl_진입중.Visible = true;
+
+                _lastOrder = _nowTickSecond;
+                청산_Click(null, null);
             }
 
 
-            청산_Click(null, null);
+            
             //this.btn_청산.PerformClick();
             //if (selectedItem != null)
             //{
@@ -1092,12 +1105,18 @@ namespace TraderTestV2
         }
         private void 매수스위칭()
         {
-            진입중 = true;
-            진입중Timer.Stop();
-            진입중Timer.Start();
-            lbl_진입중.Visible = true;
+            if (_lastOrder + 50 < _nowTickSecond)
+            {
+                진입중 = true;
+                진입중Timer.Stop();
+                진입중Timer.Start();
+                lbl_진입중.Visible = true;
 
-            btn_매수스위칭_Click(null, null);
+                _lastOrder = _nowTickSecond;
+                btn_매수스위칭_Click(null, null);
+            }
+
+            
             //this.btn_매수스위칭.PerformClick();
             //if (selectedItem != null)
             //{
@@ -1107,12 +1126,17 @@ namespace TraderTestV2
         }
         private void 매수진입()
         {
-            진입중 = true;
-            진입중Timer.Stop();
-            진입중Timer.Start();
-            lbl_진입중.Visible = true;
+            if (_lastOrder + 50 < _nowTickSecond)
+            {
+                진입중 = true;
+                진입중Timer.Stop();
+                진입중Timer.Start();
+                lbl_진입중.Visible = true;
 
-            매수_Click(null, null);
+                _lastOrder = _nowTickSecond;
+                매수_Click(null, null);
+            }
+             
             //this.btn_매수.PerformClick();
             //if (selectedItem != null)
             //{
@@ -1439,7 +1463,7 @@ namespace TraderTestV2
 
         private void chk_자동손절_CheckedChanged(object sender, EventArgs e)
         {
-            nud_손절.Enabled = chk_자동손절.Checked;
+            //nud_손절.Enabled = chk_자동손절.Checked;
             SetAutoProfit();
         }
 
@@ -1456,18 +1480,18 @@ namespace TraderTestV2
         private void chk_자동익절_MouseUp(object sender, MouseEventArgs e)
         {
             if (chk_자동익절.Checked)  chk_최소익절.Checked = !chk_자동익절.Checked;
-            nud_익절.Enabled = chk_자동익절.Checked;
-            nud_최소익절.Enabled = chk_최소익절.Checked;
-            nud_감소폭.Enabled = chk_최소익절.Checked;
+            //nud_익절.Enabled = chk_자동익절.Checked;
+            //nud_최소익절.Enabled = chk_최소익절.Checked;
+            //nud_감소폭.Enabled = chk_최소익절.Checked;
             SetAutoProfit();
         }
 
         private void chk_최소익절_MouseUp(object sender, MouseEventArgs e)
         {
             if (chk_최소익절.Checked) chk_자동익절.Checked = !chk_최소익절.Checked;
-            nud_익절.Enabled = chk_자동익절.Checked;
-            nud_최소익절.Enabled = chk_최소익절.Checked;
-            nud_감소폭.Enabled = chk_최소익절.Checked;
+            //nud_익절.Enabled = chk_자동익절.Checked;
+            //nud_최소익절.Enabled = chk_최소익절.Checked;
+            //nud_감소폭.Enabled = chk_최소익절.Checked;
             SetAutoProfit();
         }
 

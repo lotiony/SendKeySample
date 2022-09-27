@@ -1324,7 +1324,6 @@
             // 
             // nud_감소폭
             // 
-            this.nud_감소폭.Enabled = false;
             this.nud_감소폭.Increment = new decimal(new int[] {
             5,
             0,
@@ -1359,7 +1358,6 @@
             // 
             // nud_최소익절
             // 
-            this.nud_최소익절.Enabled = false;
             this.nud_최소익절.Increment = new decimal(new int[] {
             5,
             0,
@@ -1410,7 +1408,6 @@
             // 
             // nud_익절
             // 
-            this.nud_익절.Enabled = false;
             this.nud_익절.Increment = new decimal(new int[] {
             5,
             0,
@@ -1434,7 +1431,6 @@
             // 
             // nud_손절
             // 
-            this.nud_손절.Enabled = false;
             this.nud_손절.Increment = new decimal(new int[] {
             5,
             0,
@@ -1511,7 +1507,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(850, 450);
             this.Name = "MainFrm";
-            this.Text = "신호인식자동매매_Test_1.4.8";
+            this.Text = "신호인식자동매매_Test_1.4.9";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);

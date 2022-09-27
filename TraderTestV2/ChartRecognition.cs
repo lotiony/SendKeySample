@@ -207,13 +207,14 @@ namespace TraderTestV2
                 }
 
                 /// 횡보신호 사용 체크시 신호는 무시하고 들고 있던 포지션은 무조건 청산
-                if (Set.UseHBo && _count9 > this.MinRecogSize && FromCr == 1)
+                if (Set.UseHBo && _count9 > this.MinRecogSize)
                 {
                     this._isHBoSignaled = true; 
                     this.HBO(this.FromCr);
                 }
                 else
                 {
+                    this._isHBoSignaled = false;
                     switch (Set.RecogMode)
                     {
                         /// 몸통인식일 땐 메인 영역만 체크한다.
